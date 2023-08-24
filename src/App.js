@@ -10,7 +10,6 @@ import GIF from "../src/assets/img/splash.gif";
 import { AuthContext } from "./utils/AuthProvider";
 const Layout = lazy(() => import("./containers/Layout"));
 const Login = lazy(() => import("./pages/Login"));
-const CreateAccount = lazy(() => import("./pages/CreateAccount"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Index = lazy(() => import("./pages/Index"));
 // const Index = lazy(() => import("./pages/Index"));
@@ -23,7 +22,6 @@ function App() {
         <AccessibleNavigationAnnouncer />
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/create-account" component={CreateAccount} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/app" component={Layout} />
           <Route path="/" component={Index} />

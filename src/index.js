@@ -7,7 +7,6 @@ import ThemedSuspense from "./components/ThemedSuspense";
 import { Windmill } from "@windmill/react-ui";
 import * as serviceWorker from "./serviceWorker";
 import AuthProvider from "./utils/AuthProvider";
-import { MoralisProvider } from "react-moralis";
 import { ThemeProvider } from "next-themes";
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -21,12 +20,8 @@ ReactDOM.render(
     <Suspense fallback={<ThemedSuspense />}>
       <Windmill usePreferences>
         <AuthProvider>
-          <MoralisProvider
-            appId="995aaef0-b68f-4e5a-b8ce-0bd97b340631"
-            serverUrl="https://authapi.moralis.io/challenge/request/evm"
-          >
+         
             <App />
-          </MoralisProvider>
         </AuthProvider>
       </Windmill>
     </Suspense>

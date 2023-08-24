@@ -50,8 +50,8 @@ export const ThemeProvider = ({ children }) => {
   }, [theme, oldTheme])
 
   function toggleTheme() {
-    if (theme === 'light') setTheme('dark')
-    else setTheme('light')
+    if (theme === "dark") setTheme("light");
+    else setTheme("dark");
   }
 
   const value = useMemo(

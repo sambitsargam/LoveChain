@@ -7,11 +7,10 @@ import { Button } from "@windmill/react-ui";
 import IPFS from "../../assets/img/ipfs.png";
 import WS from "../../assets/img/ws.png";
 import Logo from "../../assets/productify-logo.svg";
-import Moralis from "../../assets/img/moralis.png";
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon];
   return <Icon {...props} />;
-}
+}  
 
 function SidebarContent() {
   return (
@@ -22,7 +21,7 @@ function SidebarContent() {
         href="#"
       >
         <img src={Logo} className="h-8 pr-3" />
-        Destore
+        LoveChain
         {/* <button className="bg-green-500 text-white text-lg px-4 rounded-full ml-4 py-1 mt-2">
           Disconnect
         </button> */}
@@ -60,7 +59,7 @@ function SidebarContent() {
       <div className="px-6 my-6">
         <Link to="/app/dashboard">
           <button className="bg-blue-500 text-white text-md px-5 rounded-md py-2">
-            Create Folder
+            Create Profile
             <span className="ml-2" aria-hidden="true">
               +
             </span>
@@ -71,19 +70,15 @@ function SidebarContent() {
       <hr />
 
       <div className="space-y-6 ml-6  mt-3">
-        <Link to="/app/storage" className="mb-4">
           <div className="flex flex-row mb-4 items-center space-x-2">
             <img src={IPFS} className="w-8" />
             <p>IPFS</p>
           </div>
-        </Link>
 
-        <Link to="/app/storage">
           <div className="flex flex-row items-center space-x-2">
             <img src={WS} className="w-8 rounded-lg" />
             <p className="">web3 storage</p>
           </div>
-        </Link>
         {/* 
         <div className="flex flex-row items-center space-x-2">
           <img src={Moralis} className="w-8 rounded-lg" />

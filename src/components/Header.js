@@ -5,19 +5,15 @@ import { Button } from "@nextui-org/react";
 import { SearchIcon, MoonIcon, SunIcon, MenuIcon } from "../icons";
 import { Input, WindmillContext } from "@windmill/react-ui";
 import Emojicons from "../pages/Emojicons";
-import { useMoralis, useMoralisQuery } from "react-moralis";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
   const { address, signer, connect, disconnect, web3Provider } =
     useContext(AuthContext);
-  const { user } = useMoralis();
   let userprofile_ = JSON.parse(localStorage.getItem("userprofile"));
   let username;
-  if (!user?.getUsername()) {
-    username = "me";
-  }
+ 
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
@@ -107,7 +103,7 @@ function Header() {
 
             {userprofile === null || userprofile[2] === "" ? (
               <div class=" hidden md:flex items-center justify-center h-10 w-10 rounded-full bg-blue-300 flex-shrink-0">
-                <Emojicons username={user?.getUsername()} />
+                <Emojicons  />
               </div>
             ) : (
               <img

@@ -9,7 +9,6 @@ import  React, {
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, providers } from 'ethers';
 import { destoreAddress } from '../config';
-import axios from 'axios';
 import WalletLink from 'walletlink';
 // import donationContract from './fakeabi.json';
 import destoreContract from "./Destore.json";
