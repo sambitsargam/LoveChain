@@ -2,6 +2,7 @@
 import { SSX } from "@spruceid/ssx";
 import { useState } from "react";
 import KeplerStorageComponent from "../components/KeplerStorageComponent";
+import React from "react";
 
 const SSXComponent = () => {
 
@@ -9,11 +10,6 @@ const SSXComponent = () => {
 
   const ssxHandler = async () => {
     const ssx = new SSX({
-      providers: {
-        server: {
-          host: "http://localhost:3000/api"
-        }
-      },
       modules: {
         storage: {
           prefix: 'my-app',

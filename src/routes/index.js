@@ -3,13 +3,14 @@ import { lazy } from "react";
 // use lazy for better code splitting, a.k.a. load faster
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Setting = lazy(() => import("../pages/Setting"));
-const Chats = lazy(() => import("../pages/Chats"));
+const Chats = lazy(() => import("../pages/Chat"));
 const NFT = lazy(() => import("../pages/NFT"));
 const Assets = lazy(() => import("../pages/Assets"));
 const Resell = lazy(() => import("../pages/Resell"));
 const NFTDashboard = lazy(() => import("../pages/NFTDashboard"));
 const Page404 = lazy(() => import("../pages/404"));
 const Blank = lazy(() => import("../pages/Blank"));
+
 /**
  * ⚠ These are internal routes!
  * They will be rendered inside the app, using the default `containers/Layout`.
