@@ -13,6 +13,6 @@ function Emojicons({ username, logoutOnPress }) {
       onClick={() => logoutOnPress && logout()}
     />
   );
-}
+}  
 
 export default Emojicons;

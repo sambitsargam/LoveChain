@@ -17,7 +17,7 @@ function Settings() {
   const onChangeUserName = () => {
     if (username === "") {
       return;
-    }
+    }  
     setUserData({
       username: username,
     }).then((res) => {
@@ -48,26 +48,9 @@ function Settings() {
           </div>
         )}
       </div>
-
-      <p className="dark:text-white pb-2">User Profile Name</p>
+      <p className="dark:text-white pb-2">Connected Wallet</p>
       <hr />
-      <div className="flex flex-row mt-3  items-center">
-        <Input
-          className="focus:ring-0 focus:border-transparent"
-          placeholder="change username"
-          onChange={(e) => {
-            setusername(e.target.value);
-          }}
-          value={username}
-        />
-        <div
-          onClick={() => {
-            onChangeUserName();
-          }}
-        >
-          <CheckCircleIcon className="h-6 dark:text-gray-200" />
-        </div>
-      </div>
+Todo : Add wallet connect
     </>
   );
 }
