@@ -25,6 +25,7 @@ function Buttons() {
   const [visible2, setVisible2] = React.useState(false);
   const [userstatus, setuserstatus] = useState("");
   const [imageurl, setimageurl] = useState("");
+  const [name, setname] = useState("");
   const [gender, setgender] = useState("");
   const [year , setyear] = useState("");
   const [country , setcountry] = useState("");
@@ -59,7 +60,7 @@ function Buttons() {
   }, [signer]);
 
   const onAddProfile = async () => {
-    let transaction = await signer.createProfile(imageurl, profile, gender, year, country);
+    let transaction = await signer.createProfile(imageurl, name, profile, gender, year, country);
     setisloading(true);
     let txReceipt = await transaction.wait();
     setisloading(false);
@@ -108,28 +109,41 @@ function Buttons() {
             color="primary"
             size="lg"
             required
+            value={name}
+            onChange={(e) => {
+              setname(e.target.value);
+            }}
+            placeholder="Enter your name"
+          />
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            required
             value={imageurl}
             onChange={(e) => {
               setimageurl(e.target.value);
             }}
             placeholder="place image url here"
           />
-            <select
-              fullWidth
-              color="primary"
-              size="xl"
-              value={gender} // Assuming you have a 'gender' state for the selected value
-              required
-              onChange={(e) => {
-                setgender(e.target.value); // Assuming you have a 'setGender' function
-              }}
-              placeholder=""
-            >
-              <option value="Select your Gender">Select your Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+          <select
+            fullWidth
+            color="primary"
+            size="xl"
+            value={gender} // Assuming you have a 'gender' state for the selected value
+            required
+            onChange={(e) => {
+              setgender(e.target.value); // Assuming you have a 'setGender' function
+            }}
+            placeholder=""
+          >
+            <option value="U">Select your Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="Other">Other</option>
+          </select>
 
           <Input
             clearable
@@ -274,45 +288,46 @@ function Buttons() {
         </div>
       </form>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-2 gap-8 ">
-        {users?.map((users) => (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {users?.map((user) => (
           <div
-            class="overflow-hidden border border-gray-200 rounded-lg grid grid-cols-1 group sm:grid-cols-3"
-            href=""
+            key={user.id} // Make sure to use a unique key for each mapped element
+            className="overflow-hidden border border-gray-200 rounded-lg grid grid-cols-1 group sm:grid-cols-3"
           >
-            <div class="relative">
+            <div className="relative">
               <img
-                class="absolute inset-0 object-cover w-full h-full"
-                src={users?.image}
+                className="absolute inset-0 object-cover w-full h-full"
+                src={user.image}
                 alt=""
               />
             </div>
 
-            <div class="p-8 sm:col-span-1">
-              <ul class="flex space-x-1">
+            <div className="p-8 sm:col-span-1 lg:col-span-2">
+              {" "}
+              {/* Use lg:col-span-2 to span both columns on larger screens */}
+              <h5 className="mt-1 font-bold text-2xl dark:text-gray-300">
+                {user.name} ({user.gender})
+              </h5>
+              <p className="mt-3 text-xl text-gray-500 dark:text-gray-200">
+                📍 {user.country}  {user.year} Years Old
+              </p>
+              <p className="mt-4 text-sm text-gray-500 dark:text-gray-200">
+                {user.profile}
+              </p>
+              <br></br>
+              <ul className="flex space-x-2">
                 <li
                   onClick={() => {
                     setVisible2(true);
-                    setuserid(users?.id?.toString());
-                    // onTipUser(users?.id?.toString());
+                    setuserid(user.id.toString());
                   }}
-                  class="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
+                  className="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
                 >
                   Tip
                 </li>
               </ul>
-
-              <h5 class="mt-4 font-bold dark:text-gray-300">
-                {" "}
-                {ellipseAddress(users?._address)}
-              </h5>
-
-              <p class="mt-4 text-sm text-gray-500 dark:text-gray-200">
-                {users?.profile}
-              </p>
-              <p class="mt-2 text-sm text-gray-500 dark:text-gray-200">
-                {ethers.utils.formatEther(users?.balance?.toString())}
-                AVAX
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
+                {ethers.utils.formatEther(user.balance.toString())} AVAX
               </p>
             </div>
           </div>
