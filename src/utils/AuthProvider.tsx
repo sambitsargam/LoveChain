@@ -10,7 +10,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, providers } from 'ethers';
 import { destoreAddress } from '../config';
 import WalletLink from 'walletlink';
-// import donationContract from './fakeabi.json';
+import { SSX } from '@spruceid/ssx'; 
 import destoreContract from "./Destore.json";
 import Web3Modal from 'web3modal';
 import { ellipseAddress, getChainData } from '../lib/utilities';
@@ -83,7 +83,7 @@ const providerOptions = {
 let web3Modal;
 if (typeof window !== 'undefined') {
   web3Modal = new Web3Modal({
-    network: 'mainnet', // optional
+    network: 'testnet', // optional
     cacheProvider: true,
     providerOptions, // required
   });
@@ -202,16 +202,6 @@ const AuthProvider = ({ children }) => {
     /* create a generic provider and query for unsold market items */
     // const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/avalanche_fuji');
-    // const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com');
-      // 'https://rpc-.maticvigil.com/'
-    // 'https://rpc-mumbai.matic.today'
-    // https://polygon-mumbai.g.alchemy.com/v2/2bGIFu-iEnl9RvAOTe1ddZI2gBnuYQGS'
-    // 'https://rpc-mumbai.matic.today'
-    // ' https://rpc-mumbai.maticvigil.com/'
-    // 'https://kovan.infura.io/v3/745fcbe1f649402c9063fa946fdbb84c'
-    // 'https://rpc-mumbai.maticvigil.com'
-    // 'https://kovan.infura.io/v3/745fcbe1f649402c9063fa946fdbb84c'
-    // 'https://kovan.infura.io/v3/745fcbe1f649402c9063fa946fdbb84c'
 
     const contract = new ethers.Contract(
       destoreAddress,
@@ -232,23 +222,45 @@ const AuthProvider = ({ children }) => {
     }
   }
 
+
   const connect = useCallback(async function () {
-    // console.log('button of connect clicked');
-
-    // This is the initial `provider` that is returned when
-    // using web3Modal to connect. Can be MetaMask or WalletConnect.
     const provider = await web3Modal.connect();
-
-    // We plug the initial `provider` into ethers.js and get back
-    // a Web3Provider. This will add on methods from ethers.js and
-    // event listeners such as `.on()` will be different.
-
     const web3Provider = new providers.Web3Provider(provider);
     const signer = web3Provider.getSigner() as any;
     const address = await signer.getAddress();
     const network = (await web3Provider.getNetwork()) as any;
 
-    // console.log(signer);
+
+    // Check if the current chain ID is not 1 (Mainnet)
+      // Check if the user is on the Rinkeby testnet (chain ID 4)
+    if (network.chainId === 43113) {
+        const ssx = new SSX();
+        const session = await ssx.signIn();
+        console.log('Already on avalanche testnet',session);
+      } else {
+        try {
+          // Add custom network configuration for the desired chain
+          const customChainConfig = {
+            chainId: "0xa869", // Chain ID of the network
+            chainName: "Avalanche Fuji Testnet",
+            nativeCurrency: {
+              name: "avalanche",
+              symbol: "AVAX",
+              decimals: 18,
+            },
+            rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
+            blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+          };
+
+          // Add the custom chain to the Ethereum provider
+          await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
+          const ssx = new SSX();
+          const session = await ssx.signIn();
+
+        } catch (error) {
+          console.error('Error adding custom chain:', error);
+        }
+    }
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -258,6 +270,7 @@ const AuthProvider = ({ children }) => {
       chainId: network.chainId,
     });
   }, []);
+
 
   const disconnect = useCallback(
     async function () {

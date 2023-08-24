@@ -4,7 +4,7 @@ import { AuthContext } from "../utils/AuthProvider";
 import { Button } from "@nextui-org/react";
 import { SearchIcon, MoonIcon, SunIcon, MenuIcon } from "../icons";
 import { Input, WindmillContext } from "@windmill/react-ui";
-import Emojicons from "../pages/Emojicons";
+import { SSX } from '@spruceid/ssx';
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -27,6 +27,7 @@ function Header() {
   function handleProfileClick() {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   }
+
 
   return (
     <header className="z-30 w-full py-4 bg-white shadow-bottom dark:bg-gray-800">
@@ -103,7 +104,6 @@ function Header() {
 
             {userprofile === null || userprofile[2] === "" ? (
               <div class=" hidden md:flex items-center justify-center h-10 w-10 rounded-full bg-blue-300 flex-shrink-0">
-                <Emojicons  />
               </div>
             ) : (
               <img

@@ -5,26 +5,13 @@ import { SidebarContext } from "../context/SidebarContext";
 import { MoonIcon, SunIcon } from "../icons";
 import { Input } from "@windmill/react-ui";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { useMoralis, useMoralisQuery } from "react-moralis";
 
 function Settings() {
-  const { isAuthenticated, logout, authenticate, user, Moralis, setUserData } =
-    useMoralis();
+ 
 
   const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
-  const [username, setusername] = useState("");
-  const onChangeUserName = () => {
-    if (username === "") {
-      return;
-    }  
-    setUserData({
-      username: username,
-    }).then((res) => {
-      setusername("");
-      alert("Name changed");
-    });
-  };
+  
   return (
     <>
       <PageTitle>Settings</PageTitle>

@@ -11,10 +11,11 @@
     "@material-tailwind/react": "^1.0.6",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@ramonak/react-progress-bar": "^4.4.0",
+    "@spruceid/ssx": "^2.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@walletconnect/web3-provider": "^1.7.8",
+    "@walletconnect/web3-provider": "^1.8.0",
     "@windmill/react-ui": "0.3.1",
     "avataaars": "^2.0.0",
     "axios": "^0.26.1",
@@ -52,12 +53,13 @@
     "web3": "^1.7.3",
     "web3modal": "^1.9.9",
     "webpack": "^5.74.0"
-    },
+  },
   "scripts": {
     "serve": "webpack serve --mode development",
     "tailwind:dev": "tailwindcss build src/assets/css/tailwind.css -o src/assets/css/tailwind.output.css",
     "tailwind:build": "cross-env NODE_ENV=production postcss src/assets/css/tailwind.css -o src/assets/css/tailwind.output.css",
     "prestart": "npm run tailwind:dev",
+    
     "start": "react-app-rewired start",
     "prebuild": "npm run tailwind:build",
     "build": "react-app-rewired build --openssl-legacy-provider && echo '/* /index.html 200' | cat >build/_redirects",
@@ -85,7 +87,7 @@
     "tailwindcss": "1.4.6",
     "typescript": "^4.8.2",
     "url": "^0.11.0"
-    },
+  },
   "keywords": [
     "windmill",
     "dashboard",

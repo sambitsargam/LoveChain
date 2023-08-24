@@ -236,7 +236,7 @@ function Buttons() {
             onChange={(e) => {
               setamount(e.target.value);
             }}
-            placeholder="Enter amount(eth)"
+            placeholder="Enter amount(avax)"
           />
         </Modal.Body>
         <Modal.Footer>
@@ -258,7 +258,7 @@ function Buttons() {
           </Button>
         </Modal.Footer>
       </Modal>
-      <PageTitle>Available Users</PageTitle>
+      <PageTitle>Available Profiles</PageTitle>
 
       <form className="mb-4">
         <label
