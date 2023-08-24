@@ -7,12 +7,14 @@ import ThemedSuspense from "./components/ThemedSuspense";
 import { Windmill } from "@windmill/react-ui";
 import * as serviceWorker from "./serviceWorker";
 import AuthProvider from "./utils/AuthProvider";
-import { ThemeProvider } from "next-themes";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const axe = require('react-axe')
 //   axe(React, ReactDOM, 1000)
 // }
+
+// lets create for avalanche fuji
+
  
 ReactDOM.render(
   // <ThemeProvider attribute="class">
@@ -22,7 +24,7 @@ ReactDOM.render(
         <AuthProvider>
          
             <App />
-        </AuthProvider>
+        </AuthProvider>  
       </Windmill>
     </Suspense>
   </SidebarProvider>,
