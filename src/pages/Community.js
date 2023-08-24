@@ -25,6 +25,9 @@ function Buttons() {
   const [visible2, setVisible2] = React.useState(false);
   const [userstatus, setuserstatus] = useState("");
   const [imageurl, setimageurl] = useState("");
+  const [gender, setgender] = useState("");
+  const [year , setyear] = useState("");
+  const [country , setcountry] = useState("");
   const [profile, setprofile] = useState("");
   const [isloading, setisloading] = useState(false);
   const [amount, setamount] = useState("");
@@ -56,7 +59,7 @@ function Buttons() {
   }, [signer]);
 
   const onAddProfile = async () => {
-    let transaction = await signer.createProfile(imageurl, profile);
+    let transaction = await signer.createProfile(imageurl, profile, gender, year, country);
     setisloading(true);
     let txReceipt = await transaction.wait();
     setisloading(false);
@@ -110,6 +113,49 @@ function Buttons() {
               setimageurl(e.target.value);
             }}
             placeholder="place image url here"
+          />
+            <select
+              fullWidth
+              color="primary"
+              size="xl"
+              value={gender} // Assuming you have a 'gender' state for the selected value
+              required
+              onChange={(e) => {
+                setgender(e.target.value); // Assuming you have a 'setGender' function
+              }}
+              placeholder=""
+            >
+              <option value="Select your Gender">Select your Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            value={year}
+            required
+            onChange={(e) => {
+              setyear(e.target.value);
+            }}
+            placeholder="How Old are you?"
+          />
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            required
+            value={country}
+            onChange={(e) => {
+              setcountry(e.target.value);
+            }}
+            placeholder="Where are you from?"
           />
           <Textarea
             clearable
@@ -191,7 +237,7 @@ function Buttons() {
           </Button>
         </Modal.Footer>
       </Modal>
-      <PageTitle>Destore Community</PageTitle>
+      <PageTitle>Available Users</PageTitle>
 
       <form className="mb-4">
         <label
@@ -228,7 +274,7 @@ function Buttons() {
         </div>
       </form>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-2 gap-8 ">
         {users?.map((users) => (
           <div
             class="overflow-hidden border border-gray-200 rounded-lg grid grid-cols-1 group sm:grid-cols-3"
@@ -242,7 +288,7 @@ function Buttons() {
               />
             </div>
 
-            <div class="p-8 sm:col-span-2">
+            <div class="p-8 sm:col-span-1">
               <ul class="flex space-x-1">
                 <li
                   onClick={() => {
@@ -250,7 +296,7 @@ function Buttons() {
                     setuserid(users?.id?.toString());
                     // onTipUser(users?.id?.toString());
                   }}
-                  class="inline-block px-3 py-1 text-xs font-semibold text-white bg-blue-600 rounded-full"
+                  class="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
                 >
                   Tip
                 </li>
@@ -261,12 +307,12 @@ function Buttons() {
                 {ellipseAddress(users?._address)}
               </h5>
 
-              <p class="mt-2 text-sm text-gray-500 dark:text-gray-200">
+              <p class="mt-4 text-sm text-gray-500 dark:text-gray-200">
                 {users?.profile}
               </p>
               <p class="mt-2 text-sm text-gray-500 dark:text-gray-200">
                 {ethers.utils.formatEther(users?.balance?.toString())}
-                ETH
+                AVAX
               </p>
             </div>
           </div>

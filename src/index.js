@@ -22,7 +22,7 @@ ReactDOM.render(
       <Windmill usePreferences>
         <AuthProvider>
           <MoralisProvider
-            appId="UOh79MJrbNBkykCDAOoNsZtbOExU3LwJGHWaH72vmMwLnuG05Ys8yJtIKuEf8059"
+            appId="995aaef0-b68f-4e5a-b8ce-0bd97b340631"
             serverUrl="https://authapi.moralis.io/challenge/request/evm"
           >
             <App />
