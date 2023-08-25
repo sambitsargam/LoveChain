@@ -43,6 +43,24 @@ function Buttons() {
     setVisible2(false);
     console.log("closed");
   };
+
+  async function fetchUsersWithENSNames() {
+    const data = await signer?.fetchAllUsers();
+    if (data) {
+      // Check if data is defined
+      const usersWithENSNames = await Promise.all(
+        data.map(async (user) => {
+          const ensName = await getENSName(user._address);
+          return {
+            ...user,
+            ensName: ensName,
+          };
+        })
+      );
+      setusers(usersWithENSNames);
+    }
+  }
+
   async function isUserRegistered() {
     const data = await signer?.isRegistered();
     setuserstatus(data);
@@ -56,8 +74,18 @@ function Buttons() {
   }
   useEffect(() => {
     isUserRegistered();
+        fetchUsersWithENSNames();
     allUsers();
   }, [signer]);
+
+  //let create a function to fetch any address's ens name
+  async function getENSName(addrs) {
+          const apiUrl = `https://ensdata.net/${addrs}`;
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          console.log(data.ens);
+          return data.ens;
+  }
 
   const onAddProfile = async () => {
     let transaction = await signer.createProfile(
@@ -311,10 +339,16 @@ function Buttons() {
 
             <div className="p-8 sm:col-span-1 lg:col-span-2">
               {" "}
+              {/* adding a emoji to the right corner */}
+             
+
               {/* Use lg:col-span-2 to span both columns on larger screens */}
               <h5 className="mt-1 font-bold text-2xl dark:text-gray-300">
                 {user.name} ({user.gender})
               </h5>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
+                {user.ensName ? user.ensName : ".."}
+              </p>
               <p className="mt-3 text-xl text-gray-500 dark:text-gray-200">
                 📍 {user.country} {user.year} Years Old
               </p>
