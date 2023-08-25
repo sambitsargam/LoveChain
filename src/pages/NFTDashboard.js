@@ -12,7 +12,7 @@ import {
 } from "@windmill/react-ui";
 import { AuthContext } from "../utils/AuthProvider";
 import { ethers } from "ethers";
-
+ // eslint-disable-unused-vars
 export default function NFTDashboard() {
   const { address, signer, connect, contract, provider } =
     useContext(AuthContext);
@@ -50,7 +50,7 @@ export default function NFTDashboard() {
                 </div>
                 <h5 class="text-md font-bold w-9/12 dark:text-white text-white rounded-full px-1 bg-yellow-300 ">
                   {ethers.utils.formatEther(item?.price?.toString())}
-                  ETH
+                  AVAX
                 </h5>
                 <p class="mt-1 text-sm dark:text-gray-200 text-gray-500">
                   {item.description}

@@ -228,13 +228,22 @@ const AuthProvider = ({ children }) => {
     const web3Provider = new providers.Web3Provider(provider);
     const signer = web3Provider.getSigner() as any;
     const address = await signer.getAddress();
+    // saving the address to local storage
+    localStorage.setItem('address', address);
     const network = (await web3Provider.getNetwork()) as any;
+      
 
-
-    // Check if the current chain ID is not 1 (Mainnet)
-      // Check if the user is on the Rinkeby testnet (chain ID 4)
     if (network.chainId === 43113) {
         const ssx = new SSX();
+        // const ssx = new SSX({
+        //   resolveEns: {
+        //     resolveOnServer: false, // false as default
+        //     resolve: {
+        //       domain: true,
+        //       avatar: true
+        //     }
+        //   }
+        // });
         const session = await ssx.signIn();
         console.log('Already on avalanche testnet',session);
       } else {

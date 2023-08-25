@@ -9,10 +9,8 @@ import { SSX } from '@spruceid/ssx';
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
-  const { address, signer, connect, disconnect, web3Provider } =
+  const { address, connect, disconnect, web3Provider } =
     useContext(AuthContext);
-  let userprofile_ = JSON.parse(localStorage.getItem("userprofile"));
-  let username;
  
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -21,14 +19,21 @@ function Header() {
     setIsNotificationsMenuOpen(!isNotificationsMenuOpen);
   }
 
+  
   let userprofile = JSON.parse(localStorage.getItem("userprofile"));
 
   console.log(userprofile);
   function handleProfileClick() {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   }
+  const ensname = `https://ensdata.net/${address}`;
+  const domain = ensname.ens;
+  console.log("domain", domain);
+  const avater = ensname.avatar;
+  console.log("avater", avater);
+ // check that the image is showing or only eeror
 
-
+  
   return (
     <header className="z-30 w-full py-4 bg-white shadow-bottom dark:bg-gray-800">
       <div className="container flex items-center justify-between h-full px-6 mx-auto text-blue-600 dark:text-blue-300">

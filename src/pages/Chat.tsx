@@ -36,7 +36,7 @@ const SSXComponent = () => {
       <br></br>
       {
         ssxProvider ?
-          <>
+          <> 
             {
               address &&
               <p>
