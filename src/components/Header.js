@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SidebarContext } from "../context/SidebarContext";
 import { AuthContext } from "../utils/AuthProvider";
 import { Button } from "@nextui-org/react";
@@ -11,29 +11,32 @@ function Header() {
   const { toggleSidebar } = useContext(SidebarContext);
   const { address, connect, disconnect, web3Provider } =
     useContext(AuthContext);
- 
+
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [avatar, setAvatar] = useState('');
+  const [ens, setENS] = useState('');
 
-  function handleNotificationsClick() {
-    setIsNotificationsMenuOpen(!isNotificationsMenuOpen);
-  }
+  //fetch the address from local storage
+  const addr = localStorage.getItem("address");
+  const apiUrl = `https://ensdata.net/${addr}`;
 
-  
-  let userprofile = JSON.parse(localStorage.getItem("userprofile"));
+  useEffect(() => {
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Success:", data);
+        setAvatar(data.avatar);
+        setENS(data.ens);
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
-  console.log(userprofile);
-  function handleProfileClick() {
-    setIsProfileMenuOpen(!isProfileMenuOpen);
-  }
-  const ensname = `https://ensdata.net/${address}`;
-  const domain = ensname.ens;
-  console.log("domain", domain);
-  const avater = ensname.avatar;
-  console.log("avater", avater);
- // check that the image is showing or only eeror
+  console.log("avatar", avatar);
+  console.log("ens", ens);
 
-  
   return (
     <header className="z-30 w-full py-4 bg-white shadow-bottom dark:bg-gray-800">
       <div className="container flex items-center justify-between h-full px-6 mx-auto text-blue-600 dark:text-blue-300">
@@ -73,17 +76,29 @@ function Header() {
               )}
             </button>
           </li>
+          
+
+          {avatar === undefined || !address ? (
+              <img
+                class=" hidden md:block  w-10 h-10 rounded-full shadow-lg"
+                src={"https://api.dicebear.com/6.x/personas/svg?seed=Misty"}
+                alt="Bonnie image"
+              />
+            ) : (
+              <img
+                class=" hidden md:block  w-10 h-10 rounded-full shadow-lg"
+                src={avatar}
+                alt="Bonnie image"
+              />
+            )}
+          {ens === undefined || !address ? (console.log("ens is undefined")) :
+              (<div className="text-gray-600 text-xl dark:text-gray-300">
+                {ens}
+              </div>)}
+
           <li className="flex flex-row items-center">
             {web3Provider ? (
-              // <div
-              //   className=" bg-gradient-to-r from-cyan-500 to-blue-500 px-4 md:px-6  md:py-3 py-2 rounded-md cursor-pointer text-white"
-              //   onClick={() => {
-              //     disconnect();
-              //   }}
-              // >
-              //   Disconnect
-              // </div>
-
+             
               <Button
                 onClick={() => {
                   disconnect();
@@ -94,6 +109,7 @@ function Header() {
               >
                 Disconnect
               </Button>
+              
             ) : (
               <Button
                 onClick={() => {
@@ -107,16 +123,7 @@ function Header() {
               </Button>
             )}
 
-            {userprofile === null || userprofile[2] === "" ? (
-              <div class=" hidden md:flex items-center justify-center h-10 w-10 rounded-full bg-blue-300 flex-shrink-0">
-              </div>
-            ) : (
-              <img
-                class=" hidden md:block  w-10 h-10 rounded-full shadow-lg"
-                src={userprofile[2]}
-                alt="Bonnie image"
-              />
-            )}
+            
           </li>
         </ul>
       </div>
@@ -124,4 +131,6 @@ function Header() {
   );
 }
 
+
 export default Header;
+

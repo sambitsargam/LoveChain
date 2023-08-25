@@ -46,7 +46,7 @@ export const AuthContext = createContext<authContextType>(
   authContextDefaultValues
   );
   
-  const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad';
+  const INFURA_ID = 'bbd04f1c052343db95c2aaaa53302ca7';
 
 const providerOptions = {
   walletconnect: {
@@ -83,7 +83,7 @@ const providerOptions = {
 let web3Modal;
 if (typeof window !== 'undefined') {
   web3Modal = new Web3Modal({
-    network: 'testnet', // optional
+    network: 'mainnet', // optional
     cacheProvider: true,
     providerOptions, // required
   });
