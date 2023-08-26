@@ -6,7 +6,7 @@ import  React, {
   useReducer,
 } from 'react';
 // import { useRouter } from 'next/router';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+// import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, providers } from 'ethers';
 import { destoreAddress } from '../config';
 import WalletLink from 'walletlink';
@@ -49,12 +49,12 @@ export const AuthContext = createContext<authContextType>(
   const INFURA_ID = 'bbd04f1c052343db95c2aaaa53302ca7';
 
 const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider, // required
-    options: {
-      infuraId: INFURA_ID, // required
-    },
-  },
+  // walletconnect: {
+  //   package: WalletConnectProvider, // required
+  //   options: {
+  //     infuraId: INFURA_ID, // required
+  //   },
+  // },
 
   'custom-walletlink': {
     display: {
@@ -247,30 +247,37 @@ const AuthProvider = ({ children }) => {
         const session = await ssx.signIn();
         console.log('Already on avalanche testnet',session);
       } else {
-        try {
-          // Add custom network configuration for the desired chain
-          const customChainConfig = {
-            chainId: "0xa869", // Chain ID of the network
-            chainName: "Avalanche Fuji Testnet",
-            nativeCurrency: {
-              name: "avalanche",
-              symbol: "AVAX",
-              decimals: 18,
-            },
-            rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
-            blockExplorerUrls: ["https://testnet.snowtrace.io/"],
-          };
+      const customChainConfig = {
+        chainId: "0xa869", // Chain ID of Avalanche Fuji Testnet
+        chainName: "Avalanche Fuji Testnet",
+        nativeCurrency: {
+          name: "avalanche",
+          symbol: "AVAX",
+          decimals: 18,
+        },
+        rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
+        blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+      };
 
-          // Add the custom chain to the Ethereum provider
-          await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
-          const ssx = new SSX();
-          const session = await ssx.signIn();
-          console.log('Connected to avalanche testnet',session);
+      try {
+        // Attempt to switch to the custom Avalanche network
+        await web3Provider.send("wallet_switchEthereumChain", [
+          {
+            chainId: customChainConfig.chainId,
+          },
+        ]);
+        alert('Switched to Avalanche testnet... Please  Reconnect');
+     window.location.reload();
+      } catch (switchError) {
+        // If switching network failed, add the custom network
+        await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
+        window.location.reload();
+        alert('Added to Avalanche testnet... Please  Reconnect');
 
-        } catch (error) {
-          console.error('Error adding custom chain:', error);
-        }
-    }
+        
+  }
+}
+
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
