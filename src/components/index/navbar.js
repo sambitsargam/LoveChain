@@ -27,7 +27,7 @@ export default function Navbar() {
                       className="w-8"
                     />
                   </span>
-                  <span>Destore</span>
+                  <span>LoveChain</span>
                 </a>
                 {/* </Link> */}
 

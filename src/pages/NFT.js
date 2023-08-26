@@ -193,7 +193,7 @@ export default function NFT() {
           />
         </Label>
       </Modals>
-      <PageTitle>Destore NFT Marketplace</PageTitle>
+      <PageTitle>LoveChain NFT Marketplace</PageTitle>
       <div className="w-max">
         <Button
           className="bg-blue-500 mb-3"

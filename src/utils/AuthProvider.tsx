@@ -8,17 +8,17 @@ import  React, {
 // import { useRouter } from 'next/router';
 // import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, providers } from 'ethers';
-import { destoreAddress } from '../config';
+import { AvaAddress } from '../config';
 import WalletLink from 'walletlink';
 import { SSX } from '@spruceid/ssx'; 
-import destoreContract from "./Destore.json";
+import Lovechain from "./Lovechain.json";
 import Web3Modal from 'web3modal';
 import {  getChainData } from '../lib/utilities';
 
 //write a type for status and user
 type authContextType = {
   provider?: any;
-  signer?: any;
+  signer?: any;  
   web3Provider?: any;
   contract?: any;
   address?: string;
@@ -204,8 +204,8 @@ const AuthProvider = ({ children }) => {
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/avalanche_fuji');
 
     const contract = new ethers.Contract(
-      destoreAddress,
-      destoreContract.abi,
+      AvaAddress,
+      Lovechain.abi,
       provider
     );
 
@@ -326,8 +326,8 @@ const AuthProvider = ({ children }) => {
 
       const signer_ = web3Provider.getSigner();
       const signer = new ethers.Contract(
-        destoreAddress,
-        destoreContract.abi,
+        AvaAddress,
+        Lovechain.abi,
         signer_
       );
 
