@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import routes from "../../routes/sidebar";
 import { NavLink, Route } from "react-router-dom";

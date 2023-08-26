@@ -9,7 +9,6 @@ import {
 
 import benefitOneImg from "../../public/img/benefit-one.png";
 import benefitTwoImg from "../../public/img/benefit-two.png";
-import fdfs from "../../";
 const benefitOne = {
   title: "Storage",
   // desc: "ou have the freedom to choose whether to store your data on IPFS or Web3 storage.",

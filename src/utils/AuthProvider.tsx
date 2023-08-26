@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import  React, {
-  useState,
   createContext,
   useEffect,
   useCallback,
@@ -13,7 +13,7 @@ import WalletLink from 'walletlink';
 import { SSX } from '@spruceid/ssx'; 
 import destoreContract from "./Destore.json";
 import Web3Modal from 'web3modal';
-import { ellipseAddress, getChainData } from '../lib/utilities';
+import {  getChainData } from '../lib/utilities';
 
 //write a type for status and user
 type authContextType = {
@@ -265,6 +265,7 @@ const AuthProvider = ({ children }) => {
           await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
           const ssx = new SSX();
           const session = await ssx.signIn();
+          console.log('Connected to avalanche testnet',session);
 
         } catch (error) {
           console.error('Error adding custom chain:', error);
@@ -350,7 +351,7 @@ const AuthProvider = ({ children }) => {
         }
       };
     }
-  }, [provider, disconnect]);
+  }, [provider, disconnect, web3Provider]);
 
   const chainData = getChainData(chainId);
 

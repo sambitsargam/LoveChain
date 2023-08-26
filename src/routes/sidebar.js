@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 /**
  * ⚠ These are used just to render the Sidebar!

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // import Head from "next/head";
 import Hero from "../components/index/hero";
 import Navbar from "../components/index/navbar";

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useContext, useEffect, useState } from "react";
 import { SidebarContext } from "../context/SidebarContext";
@@ -5,7 +6,6 @@ import { AuthContext } from "../utils/AuthProvider";
 import { Button } from "@nextui-org/react";
 import { SearchIcon, MoonIcon, SunIcon, MenuIcon } from "../icons";
 import { Input, WindmillContext } from "@windmill/react-ui";
-import { SSX } from '@spruceid/ssx';
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -13,8 +13,6 @@ function Header() {
   const { address, connect, disconnect, web3Provider } =
     useContext(AuthContext);
 
-  const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [avatar, setAvatar] = useState('');
   const [ens, setENS] = useState('');
 

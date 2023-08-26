@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useContext } from "react";
 import { ethers } from "ethers";
 import { Link } from "react-router-dom";
@@ -114,8 +117,6 @@ function Buttons() {
   };
   return (
     <>
-      {/* {isUserRegistered() == false ? setVisible(true) : setVisible(false)} */}
-      {/* <Button onClick={handler}>Open modal</Button> */}
       {userstatus == false ? (
         <Button color="gradient" onClick={handler} className="mt-6">
           Add Profile
@@ -338,10 +339,18 @@ function Buttons() {
             </div>
 
             <div className="p-8 sm:col-span-1 lg:col-span-2">
-              {" "}
               {/* adding a emoji to the right corner */}
-             
-
+              {user.ensName && (
+              <div className="flex justify-end mt-1px">
+                <img
+                  src={
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
+                  }
+                  className="w-8 h-8"
+                  alt="img"
+                />
+              </div>
+              )}
               {/* Use lg:col-span-2 to span both columns on larger screens */}
               <h5 className="mt-1 font-bold text-2xl dark:text-gray-300">
                 {user.name} ({user.gender})
