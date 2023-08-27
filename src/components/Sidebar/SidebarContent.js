@@ -1,12 +1,20 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import routes from "../../routes/sidebar";
 import { NavLink, Route, Link } from "react-router-dom";
 import * as Icons from "../../icons";
 import SidebarSubmenu from "./SidebarSubmenu";
 import { Button } from "@windmill/react-ui";
-import IPFS from "../../assets/img/ipfs.png";
+import ens from "../../assets/ens.svg"
 import WS from "../../assets/img/ws.png";
+import union from "../../assets/union.png"
 import Logo from "../../assets/productify-logo.svg";
+import SP from "../../assets/spp.png";
+import ava from "../../assets/ava.svg";
+import arb from "../../assets/arb.png";
+import xmtp from "../../assets/xmtp.png";
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon];
   return <Icon {...props} />;
@@ -70,20 +78,35 @@ function SidebarContent() {
       <hr />
 
       <div className="space-y-6 ml-6  mt-3">
-          <div className="flex flex-row mb-4 items-center space-x-2">
-            <img src={IPFS} className="w-8" />
-            <p>IPFS</p>
-          </div>
-
-          <div className="flex flex-row items-center space-x-2">
-            <img src={WS} className="w-8 rounded-lg" />
-            <p className="">web3 storage</p>
-          </div>
-        {/* 
         <div className="flex flex-row items-center space-x-2">
-          <img src={Moralis} className="w-8 rounded-lg" />
-          <p>Moralis</p>
-        </div> */}
+          <img src={SP} className="w-10 rounded-lg" />
+          <p className="">Spruce Id</p>
+        </div>
+        <div className="flex flex-row mb-4 items-center space-x-2">
+          <img src={ens} className="w-8" />
+          <p>ENS Domain</p>
+        </div>
+
+        <div className="flex flex-row items-center space-x-2">
+          <img src={union} className="w-8 rounded-lg" />
+          <p className="">Union Fianace</p>
+        </div>
+        <div className="flex flex-row items-center space-x-2">
+          <img src={ava} className="w-8 rounded-lg" />
+          <p className="">Avalanche</p>
+        </div>
+        <div className="flex flex-row items-center space-x-2">
+          <img src={arb} className="w-8 rounded-lg" />
+          <p className="">Arbitrum</p>
+        </div>
+        <div className="flex flex-row items-center space-x-2">
+          <img src={WS} className="w-8 rounded-lg" />
+          <p className="">web3 storage</p>
+        </div>
+        <div className="flex flex-row items-center space-x-2">
+          <img src={xmtp} className="w-8 rounded-lg" />
+          <p className="">XMTP Protocol</p>
+        </div>
       </div>
     </div>
   );
