@@ -72,23 +72,22 @@ function Buttons() {
   async function allUsers() {
     const data = await signer?.fetchAllUsers();
     setusers(data);
-    console.log(data);
     // setuserstatus(data);
   }
   useEffect(() => {
     isUserRegistered();
-        fetchUsersWithENSNames();
+    fetchUsersWithENSNames();
     allUsers();
   }, [signer]);
 
   //let create a function to fetch any address's ens name
   async function getENSName(addrs) {
-          const apiUrl = `https://ensdata.net/${addrs}`;
-          const response = await fetch(apiUrl);
-          const data = await response.json();
-          console.log(data.ens);
-          return data.ens;
+    const apiUrl = `https://ensdata.net/${addrs}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.ens;
   }
+
 
   const onAddProfile = async () => {
     let transaction = await signer.createProfile(
@@ -115,6 +114,32 @@ function Buttons() {
     setisloading(false);
     setVisible(false);
   };
+
+  const chatamount = 0.2;
+  const onChatUser = async (add) => {
+    // const amount_ = ethers.utils.parseUnits(chatamount, "ether");
+    // let transaction = await signer.tipUser(userid, {
+    //   value: amount_,
+    // });
+    // setisloading(true);
+    // let txReceipt = await transaction.wait();
+    // now send the user data and current address to the backend's api
+    const apiUrl = `https://lovechain-23ba6-default-rtdb.firebaseio.com/chat.json`;
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        sender: address,
+        receiver: add,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setisloading(false);
+    setVisible(false);
+  };
+
   return (
     <>
       {userstatus == false ? (
@@ -340,21 +365,23 @@ function Buttons() {
 
             <div className="p-8 sm:col-span-1 lg:col-span-2">
               {/* adding a emoji to the right corner */}
-              {user.ensName && (
-              <div className="flex justify-end mt-1px">
-                <img
-                  src={
-                    "https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
-                  }
-                  className="w-8 h-8"
-                  alt="img"
-                />
-              </div>
-              )}
+
               {/* Use lg:col-span-2 to span both columns on larger screens */}
-              <h5 className="mt-1 font-bold text-2xl dark:text-gray-300">
+              <h5 className="mt-1 font-bold text-2xl dark:text-gray-300 flex items-center">
                 {user.name} ({user.gender})
+                {user.ensName && (
+                  <div className="flex items-center ml-5">
+                    <img
+                      src={
+                        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
+                      }
+                      className="w-8 h-8 transform scale-180"
+                      alt="Verified Badge"
+                    />
+                  </div>
+                )}
               </h5>
+
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
                 {user.ensName ? user.ensName : ".."}
               </p>
@@ -366,14 +393,27 @@ function Buttons() {
               </p>
               <br></br>
               <ul className="flex space-x-2">
-                <li
-                  onClick={() => {
-                    setVisible2(true);
-                    setuserid(user.id.toString());
-                  }}
-                  className="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
-                >
-                  Tip
+                <li>
+                  <button
+                    className="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
+                    onClick={() => {
+                      setVisible2(true);
+                      setuserid(user.id.toString());
+                    }}
+                  >
+                    Tip
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="inline-block px-3 py-1 text-xxl font-semibold text-white bg-blue-600 rounded-full"
+                    onClick={() => {
+                      onChatUser(user._address);
+                      setuserid(user.id.toString());
+                    }}
+                  >
+                    Chat
+                  </button>
                 </li>
               </ul>
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
