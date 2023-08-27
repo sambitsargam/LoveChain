@@ -1,69 +1,66 @@
-"use client";
-import { SSX } from "@spruceid/ssx";
-import { useState } from "react";
-import KeplerStorageComponent from "../components/KeplerStorageComponent";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@windmill/react-ui";
+import { local } from "web3modal";
 
-const SSXComponent = () => {
+function Chat() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const [ssxProvider, setSSX] = useState<SSX | null>(null);
+  const currentUserAddress = localStorage.getItem("address");
 
-  const ssxHandler = async () => {
-    const ssx = new SSX({
-      providers: {
-        server: {
-          host: "http://localhost:3000/api"
-        }
-      },
-      modules: {
-        storage: {
-          prefix: 'my-app',
-          hosts: ['https://kepler.spruceid.xyz'],
-          autoCreateNewOrbit: true
-        }
-      }
-    });
-    await ssx.signIn();
-    setSSX(ssx);
-  };
-
-  const ssxLogoutHandler = async () => {
-    ssxProvider?.signOut();
-    setSSX(null);
-   };
-
-  const address = ssxProvider?.address() || '';
+  useEffect(() => {
+    setLoading(true);
+    fetch("https://lovechain-23ba6-default-rtdb.firebaseio.com/chat.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setLoading(false);
+        const usersArray = Object.values(data).map((entry) => ({
+          id: entry.sender,
+          receiver: entry.receiver,
+          sender: entry.sender,
+        }));
+        setUsers(usersArray);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error);
+      });
+  }, []);
 
   return (
-    <>
-      <h2>User Authorization Module</h2>
-      <p>Authenticate and Authorize using your ETH keys</p>
-      <br></br>
-      {
-        ssxProvider ?
-          <>
-            {
-              address &&
-              <p>
-                <b>Ethereum Address:</b> <code>{address}</code>
+    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <div className="w-full max-w-8xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <div className="flex flex-col">
+          <main className="p-6 sm:p-12 md:w-1/2 mx-auto">
+            <h1 className="text-4xl font-semibold text-center mb-6">
+              Chat Users
+            </h1>
+            {loading ? (
+              <p className="text-center">
+                No User Found... First go to Dashboard, click on Chat for a
+                particular user.
               </p>
-            }
-            <br />
-            <button onClick={ssxLogoutHandler}>
-              <span>
-                Sign-Out
-              </span>
-            </button>
-            <br />
-            <KeplerStorageComponent ssx={ssxProvider} />
-          </> :
-          <button onClick={ssxHandler}>
-            <span>
-              Sign-In with Ethereum
-            </span>
-          </button>
-      }
-    </>
+            ) : error ? (
+              <p className="text-center">Error: {error.message}</p>
+            ) : (
+              users.map((user) => (
+                <div key={user.id} className="bg-blue-100 p-4 my-4 rounded-lg">
+                  <p className="text-center">Wanna Chat 😍 {user.receiver}</p>
+                  {user.sender === currentUserAddress ? (
+                    <Button tag={Link} to={user.link} block className="mt-4">
+                      Let's Start 🥰
+                    </Button>
+                  ) : null}
+                </div>
+              ))
+            )}
+          </main>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
-export default SSXComponent;
+export default Chat;

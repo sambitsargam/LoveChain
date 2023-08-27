@@ -117,12 +117,12 @@ function Buttons() {
 
   const chatamount = 0.2;
   const onChatUser = async (add) => {
-    // const amount_ = ethers.utils.parseUnits(chatamount, "ether");
-    // let transaction = await signer.tipUser(userid, {
-    //   value: amount_,
-    // });
-    // setisloading(true);
-    // let txReceipt = await transaction.wait();
+     const amount_ = ethers.utils.parseUnits(chatamount, "ether");
+     let transaction = await signer.tipUser(userid, {
+       value: amount_,
+     });
+     setisloading(true);
+     let txReceipt = await transaction.wait();
     // now send the user data and current address to the backend's api
     const apiUrl = `https://lovechain-23ba6-default-rtdb.firebaseio.com/chat.json`;
     const response = await fetch(apiUrl, {
