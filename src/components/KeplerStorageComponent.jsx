@@ -263,7 +263,7 @@ const KeplerStorageComponent = ({ ssx }) => {
         <div className="h-48 rounded-lg w-full">
           <FileViewer
             filePath={fileinfo}
-            fileType={getExtension(filename)}
+            fileType={getExtension(fileinfo)}
             // errorComponent={CustomErrorComponent}
             onError={onError}
           />
@@ -407,20 +407,14 @@ const KeplerStorageComponent = ({ ssx }) => {
                           files?.fileType != "pdf"
                       )}
                     </p> */}
-                  {files?.fileType != "mp3" &&
-                    files?.fileType != "mp4" &&
-                    files?.fileType != "pdf" ? (
                     <Button
                       onClick={() => {
-                        localStorage.setItem("nftstring", handleDeleteContent(content));
+                      localStorage.setItem("nftstring", fileinfo );
                         localStorage.setItem("nftactive", true);
                       }}
                     >
                       <Link to="/app/nft">Use as NFT</Link>
                     </Button>
-                  ) : (
-                    ""
-                  )}
                 </TableCell>
               </TableRow>
             ))
