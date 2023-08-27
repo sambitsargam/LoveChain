@@ -199,7 +199,7 @@ function Storage() {
       filetype,
       ""
     );
-
+ 
     let txReceipt = await transaction.wait();
     const [transferEvent] = txReceipt.events;
     console.log(transferEvent);

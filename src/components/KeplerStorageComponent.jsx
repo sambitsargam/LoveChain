@@ -24,7 +24,7 @@ import prettyBytes from "pretty-bytes";
 import DownloadLink from "react-download-link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import {
-  TableBody,
+  TableBody, 
   TableContainer,
   Table,
   TableHeader,
@@ -83,19 +83,25 @@ const KeplerStorageComponent = ({ ssx }) => {
   const resultsPerPage = 10;
   const totalResults = files?.length;
 
+// get address from local storage
+  const address = localStorage.getItem("address");
   useEffect(() => {
     getContentList();
   }, []);
 
   const getContentList = async () => {
     setLoading(true);
-    let { data } = await ssx.storage.list();
-    data = data.filter((d) => d.includes('/content/'));
-    setContentList(data);
+    try {
+      const { data } = await ssx.storage.list();
+      const filteredData = data.filter((d) => d.includes('/content/'));
+      console.log("filteredData", filteredData);
+      setContentList(filteredData);
+    } catch (error) {
+      console.error('Error fetching content list:', error);
+    }
     setLoading(false);
   };
 
-  
   function getAccessToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNCQzQzMDliYTJGRGIxMDZGZWM0YzJGMTJiZmE4RTMwQTUzMTZiZDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjI0OTA3ODUyMjUsIm5hbWUiOiJkZWNlbnRyb2dlIn0.kcD-OCoPPtPAYR9Ph_cOfz0A9Jl_KamPPmo20j0Q1Dc";
   }
@@ -109,10 +115,12 @@ const KeplerStorageComponent = ({ ssx }) => {
       alert('Invalid key or value');
       return;
     }
-    const formatedKey = 'content/' + key.replace(/\ /g, '_');
+    console.log("key", key);
     setLoading(true);
-    await ssx.storage.put(formatedKey, value);
+    await ssx.storage.put(key, value);
+    const formatedKey = 'content/' + key.replace(/\ /g, '_');
     setContentList((prevList) => [...prevList, `my-app/${formatedKey}`]);
+    console.log("contentList", contentList);
     setKey('');
     setValue('');
     setLoading(false);
@@ -156,9 +164,11 @@ const KeplerStorageComponent = ({ ssx }) => {
     // console.log(file);
     console.log(files);
     setisloading(false);
+    const values= (`https://${cid}.ipfs.dweb.link/${files.name}`);
     for (const file of filess) {
       setfiletype(file.name);
       setfilesize(file.size);
+      await handlePostContent(file.name, values);
       console.log(
         `${file.cid} -- ${file.path} -- ${file.size} -- ${file.name}`
       );
@@ -169,6 +179,7 @@ const KeplerStorageComponent = ({ ssx }) => {
    const onError = (err) => {
     console.log("Error:", err); // Write your own logic
   };
+
   const handleGetContent = async (content) => {
     setLoading(true);
     const contentName = content.replace('my-app/', '');
@@ -176,6 +187,8 @@ const KeplerStorageComponent = ({ ssx }) => {
     setViewingContent(`${content}:\n${data}`);
     setLoading(false);
   };
+
+  console.log("Viewing content:", viewingContent);
 
   const handleDeleteContent = async (content) => {
     setLoading(true);
@@ -185,13 +198,13 @@ const KeplerStorageComponent = ({ ssx }) => {
     setLoading(false);
   };
 
-  
+   
   function getExtension() {
     return filetype.split(".").pop();
   }
-  function onUploadFile() {
-    console.log("file");
-  }
+
+
+  
 
  return (
     <>
@@ -251,12 +264,6 @@ const KeplerStorageComponent = ({ ssx }) => {
                   <div class="flex items-center">Type</div>
                 </th>
                 <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  <div class="flex items-center">Size</div>
-                </th>
-                <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
-                  <div class="flex items-center">Created</div>
-                </th>
-                <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
                   <div class="flex items-center">Platform</div>
                 </th>
                 <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
@@ -269,25 +276,15 @@ const KeplerStorageComponent = ({ ssx }) => {
               <tr>
                 <td class="p-4 font-medium text-gray-900 dark:text-gray-300 flex flex-col justify-start items-center whitespace-nowrap">
                   <DocumentTextIcon className="h-6 dark:text-gray-200" />{" "}
-                  <span>{fileinfo.fileType}</span>
-                </td>
-                <td class="p-4 text-gray-700 dark:text-gray-300  whitespace-nowrap">
-                  <ServerIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>
-                    {prettyBytes(parseInt(fileinfo?.fileSize?.toString()) || 0)}
-                  </span>
-                </td>
-                <td class="p-4 text-gray-700 dark:text-gray-300 items-center whitespace-nowrap">
-                  <CalendarIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>{fileinfo?.uploadTime?.toString()}</span>
+                  <span>Image</span>
                 </td>
                 <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <ShieldCheckIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>IPFS</span>
+                  <span>Keepler</span>
                 </td>
                 <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <UserIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>{ellipseAddress(fileinfo.sender)}</span>
+                  <span>{ellipseAddress(address)}</span>
                 </td>
                 {/* <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <LockClosedIcon className="h-6  dark:text-gray-200" />{" "}
@@ -355,39 +352,19 @@ const KeplerStorageComponent = ({ ssx }) => {
         ""
       )}
 
-      {file && (
-        <button
-          onClick={() => {
-            onUploadFile();
-          }}
-          className="bg-blue-600 items-center space-x-4 flex rounded-full px-8 py-2 text-white item-center m-auto mt-4 mb-4"
-        >
-          Upload
-        </button>
-      )}
-      {isfileuploading ? (
-        <Progress
-          indeterminated
-          value={50}
-          color="secondary"
-          status="secondary"
-        />
-      ) : (
-        ""
-      )}
+
       {/* <FilePreview type={"file"} file={file} onError={onError} /> */}
       {/* {file && <img className="rounded mt-4" width="full" src={file} />} */}
-      <PageTitle>Files in {foldername}</PageTitle>
+      <PageTitle>Files in your Drive</PageTitle>
 
       <TableContainer>
         <Table>
           <TableHeader>
             <tr>
               <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>File Size</TableCell>
-              <TableCell>Upload Time</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell>GET</TableCell>
+              <TableCell>DELETE</TableCell>
+              <TableCell>Actions</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
@@ -401,14 +378,11 @@ const KeplerStorageComponent = ({ ssx }) => {
                 >
                   <TableCell>
                     <div className="flex items-center text-sm">
-                      {fileFormatIcon(files.fileType)}
+                      {fileFormatIcon("png")}
                       <div>
                         <p className="font-semibold">{files.fileName}</p>
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm"> {files.fileType}</span>
                   </TableCell>
                   <TableCell>
                     <span>
