@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@windmill/react-ui";
-import { local } from "web3modal";
 
 function Chat() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const currentUserAddress = localStorage.getItem("address");
+  const currentUserAddress = "0x46E9492E532567339F1bF2aFd679b21391ae6a0f"; // Replace with the user's address
 
   useEffect(() => {
     setLoading(true);
@@ -28,6 +26,11 @@ function Chat() {
         setError(error);
       });
   }, []);
+
+  const handleChatStart = (receiver) => {
+    const chatLink = `https://chat-lovechain.vercel.app/dm/${receiver}`;
+    window.open(chatLink, "_blank");
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
@@ -49,7 +52,11 @@ function Chat() {
                 <div key={user.id} className="bg-blue-100 p-4 my-4 rounded-lg">
                   <p className="text-center">Wanna Chat 😍 {user.receiver}</p>
                   {user.sender === currentUserAddress ? (
-                    <Button tag={Link} to={user.link} block className="mt-4">
+                    <Button
+                      onClick={() => handleChatStart(user.receiver)}
+                      block
+                      className="mt-4"
+                    >
                       Let's Start 🥰
                     </Button>
                   ) : null}
