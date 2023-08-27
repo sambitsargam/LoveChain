@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
@@ -24,7 +27,7 @@ import prettyBytes from "pretty-bytes";
 import DownloadLink from "react-download-link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import {
-  TableBody, 
+  TableBody,
   TableContainer,
   Table,
   TableHeader,
@@ -66,7 +69,7 @@ const KeplerStorageComponent = ({ ssx }) => {
   const [viewingContent, setViewingContent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [token, settoken] = useState("");
-   let { foldername, id } = useParams();
+  let { foldername, id } = useParams();
   const [fileinfo, setfileinfo] = useState({});
   const [copied, setcopied] = useState(false);
   const [isloading, setisloading] = useState(false);
@@ -79,11 +82,12 @@ const KeplerStorageComponent = ({ ssx }) => {
   const [files, setfiles] = useState([]);
   const [fileready, setfileready] = useState(false);
   const [fileModal, setFileModal] = useState(false);
+  const [filename, setfilename] = useState(false);
   // pagination setup
   const resultsPerPage = 10;
   const totalResults = files?.length;
 
-// get address from local storage
+  // get address from local storage
   const address = localStorage.getItem("address");
   useEffect(() => {
     getContentList();
@@ -95,13 +99,17 @@ const KeplerStorageComponent = ({ ssx }) => {
       const { data } = await ssx.storage.list();
       const filteredData = data.filter((d) => d.includes('/content/'));
       console.log("filteredData", data);
-     // filterdata=filteredData.remove
+      // filterdata=filteredData.remove
       setContentList(data);
     } catch (error) {
       console.error('Error fetching content list:', error);
     }
     setLoading(false);
   };
+
+  function getOnlyName(s) {
+    return s.replace('my-app/content/', '');
+  }
 
   function getAccessToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNCQzQzMDliYTJGRGIxMDZGZWM0YzJGMTJiZmE4RTMwQTUzMTZiZDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjI0OTA3ODUyMjUsIm5hbWUiOiJkZWNlbnRyb2dlIn0.kcD-OCoPPtPAYR9Ph_cOfz0A9Jl_KamPPmo20j0Q1Dc";
@@ -119,7 +127,6 @@ const KeplerStorageComponent = ({ ssx }) => {
     console.log("key", key);
     setLoading(true);
     await ssx.storage.put(key, value);
-    console.log(value);
     const formatedKey = 'content/' + key.replace(/\ /g, '_');
     setContentList((prevList) => [...prevList, `my-app/${formatedKey}`]);
     console.log("contentList", contentList);
@@ -127,7 +134,7 @@ const KeplerStorageComponent = ({ ssx }) => {
     setValue('');
     setLoading(false);
   };
-  
+
   // pagination change control
   function onPageChange(p) {
     setPage(p);
@@ -147,7 +154,7 @@ const KeplerStorageComponent = ({ ssx }) => {
     }
   };
 
-    async function onChangeCoverImage(e) {
+  async function onChangeCoverImage(e) {
     setisloading(true);
     const files = e.target.files[0];
     const client = makeStorageClient();
@@ -166,7 +173,7 @@ const KeplerStorageComponent = ({ ssx }) => {
     // console.log(file);
     console.log(files);
     setisloading(false);
-    const values= (`https://${cid}.ipfs.dweb.link/${files.name}`);
+    const values = (`https://${cid}.ipfs.dweb.link/${files.name}`);
     for (const file of filess) {
       setfiletype(file.name);
       setfilesize(file.size);
@@ -178,7 +185,7 @@ const KeplerStorageComponent = ({ ssx }) => {
     return cid;
   }
 
-   const onError = (err) => {
+  const onError = (err) => {
     console.log("Error:", err); // Write your own logic
   };
 
@@ -187,6 +194,8 @@ const KeplerStorageComponent = ({ ssx }) => {
     const contentName = content.replace('my-app/', '');
     const { data } = await ssx.storage.get(contentName);
     setViewingContent(`${content}:\n${data}`);
+    setfilename(contentName)
+    setfileinfo(data);
     setLoading(false);
   };
 
@@ -200,15 +209,16 @@ const KeplerStorageComponent = ({ ssx }) => {
     setLoading(false);
   };
 
-   
-  function getExtension() {
-    return filetype.split(".").pop();
+
+  function getExtension(file) {
+    const filename = String(file); // Convert to string if not already
+    return filename.split(".").pop();
   }
 
 
-  
 
- return (
+
+  return (
     <>
       <FileDetail
         title={"Details"}
@@ -228,7 +238,7 @@ const KeplerStorageComponent = ({ ssx }) => {
               filename="myfile.txt"
               exportFile={() => "My cached data"}
             /> */}
-            <DownloadLink filename={fileinfo.fileHash}>
+            <DownloadLink filename={fileinfo}>
               {/* <Button block size="large">
                 Download
               </Button> */}
@@ -238,7 +248,7 @@ const KeplerStorageComponent = ({ ssx }) => {
       >
         <div className="mb-4">
           <CopyToClipboard
-            text={fileinfo.fileHash}
+            text={fileinfo}
             onCopy={() => {
               setcopied(true);
             }}
@@ -252,8 +262,8 @@ const KeplerStorageComponent = ({ ssx }) => {
         {/* <img src={Image1} className="rounded-lg" /> */}
         <div className="h-48 rounded-lg w-full">
           <FileViewer
-            fileType={fileinfo.fileType}
-            filePath={fileinfo.fileHash}
+            filePath={fileinfo}
+            fileType={getExtension(filename)}
             // errorComponent={CustomErrorComponent}
             onError={onError}
           />
@@ -329,19 +339,11 @@ const KeplerStorageComponent = ({ ssx }) => {
             name="file_upload"
             class="hidden"
             onChange={onChangeCoverImage}
-            // onChange={onChange}
-            // onChange={sendFileToIPFS}
+          // onChange={onChange}
+          // onChange={sendFileToIPFS}
           />
         </label>
       </div>
-      {file && (
-        <FileViewer
-          fileType={getExtension()}
-          filePath={file}
-          // errorComponent={CustomErrorComponent}
-          onError={onError}
-        />
-      )}
 
       {isloading ? (
         <Progress
@@ -370,54 +372,58 @@ const KeplerStorageComponent = ({ ssx }) => {
             </tr>
           </TableHeader>
           <TableBody>
-          {contentList?.map((content, i) => (
-                <TableRow
-                  onClick={() => {
-                    setFileModal(true);
-                    setfileinfo(files);
-                  }}
-                >
-                  <TableCell>
-                    <div className="flex items-center text-sm">
-                      {fileFormatIcon("png")}
-                      <div>
-                        <p className="font-semibold">{content}</p>
-                      </div>
+            {contentList?.map((content, i) => (
+              <TableRow key={i}> 
+                <TableCell>
+                  <div className="flex items-center text-sm">
+                    {fileFormatIcon("png")}
+                    <div>
+                      <p className="font-semibold">{getOnlyName(content)}</p>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <span>
-                      jj
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span>ii</span>
-                  </TableCell>
-                  <TableCell>
-                    {/* <p>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span>
+                    <Button onClick={() => {
+                      handleGetContent(content)
+                      setFileModal(true);
+                    }}>
+                      GET
+                    </Button>
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <span>
+                    <Button onClick={() => handleDeleteContent(content)}>
+                      DELETE
+                    </Button>
+                  </span>
+                </TableCell>
+                <TableCell>
+                  {/* <p>
                       {String(
                         files?.fileType != "mp3" &&
                           files?.fileType != "mp4" &&
                           files?.fileType != "pdf"
                       )}
                     </p> */}
-                    {files?.fileType != "mp3" &&
+                  {files?.fileType != "mp3" &&
                     files?.fileType != "mp4" &&
                     files?.fileType != "pdf" ? (
-                      <Button
-                        onClick={() => {
-                          localStorage.setItem("nftstring", files?.fileHash);
-                          localStorage.setItem("nftactive", true);
-                        }}
-                      >
-                        <Link to="/app/nft">Use as NFT</Link>
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
+                    <Button
+                      onClick={() => {
+                        localStorage.setItem("nftstring", handleDeleteContent(content));
+                        localStorage.setItem("nftactive", true);
+                      }}
+                    >
+                      <Link to="/app/nft">Use as NFT</Link>
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                </TableCell>
+              </TableRow>
+            ))
               .reverse()}
           </TableBody>
         </Table>

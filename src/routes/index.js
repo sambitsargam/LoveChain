@@ -3,7 +3,7 @@ import { lazy } from "react";
 // use lazy for better code splitting, a.k.a. load faster
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Setting = lazy(() => import("../pages/Setting"));
-const Chats = lazy(() => import("../pages/Chat"));
+const Chats = lazy(() => import("../pages/Chats"));
 const NFT = lazy(() => import("../pages/NFT"));
 const Assets = lazy(() => import("../pages/Assets"));
 const Resell = lazy(() => import("../pages/Resell"));
