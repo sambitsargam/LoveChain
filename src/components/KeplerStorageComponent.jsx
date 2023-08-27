@@ -94,8 +94,9 @@ const KeplerStorageComponent = ({ ssx }) => {
     try {
       const { data } = await ssx.storage.list();
       const filteredData = data.filter((d) => d.includes('/content/'));
-      console.log("filteredData", filteredData);
-      setContentList(filteredData);
+      console.log("filteredData", data);
+     // filterdata=filteredData.remove
+      setContentList(data);
     } catch (error) {
       console.error('Error fetching content list:', error);
     }
@@ -118,6 +119,7 @@ const KeplerStorageComponent = ({ ssx }) => {
     console.log("key", key);
     setLoading(true);
     await ssx.storage.put(key, value);
+    console.log(value);
     const formatedKey = 'content/' + key.replace(/\ /g, '_');
     setContentList((prevList) => [...prevList, `my-app/${formatedKey}`]);
     console.log("contentList", contentList);
@@ -368,8 +370,7 @@ const KeplerStorageComponent = ({ ssx }) => {
             </tr>
           </TableHeader>
           <TableBody>
-            {files
-              ?.map((files, i) => (
+          {contentList?.map((content, i) => (
                 <TableRow
                   onClick={() => {
                     setFileModal(true);
@@ -380,17 +381,17 @@ const KeplerStorageComponent = ({ ssx }) => {
                     <div className="flex items-center text-sm">
                       {fileFormatIcon("png")}
                       <div>
-                        <p className="font-semibold">{files.fileName}</p>
+                        <p className="font-semibold">{content}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <span>
-                      {prettyBytes(parseInt(files?.fileSize?.toString()) || 0)}
+                      jj
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span>{timeConverter(files?.uploadTime?.toString())}</span>
+                    <span>ii</span>
                   </TableCell>
                   <TableCell>
                     {/* <p>
