@@ -11,6 +11,7 @@ const NFTDashboard = lazy(() => import("../pages/NFTDashboard"));
 const Page404 = lazy(() => import("../pages/404"));
 const Blank = lazy(() => import("../pages/Blank"));
 const Finance = lazy(() => import("../pages/Union"));
+const Storage = lazy(() => import("../pages/Storage"));
 
 /**
  * ⚠ These are internal routes!
@@ -31,6 +32,10 @@ const routes = [
   //   path: "/favorite",
   //   component: Favorite,
   // },
+  {
+    path: "/storage",
+    component: Storage,
+  },
   {
     path: "/finance",
     component: Finance,
