@@ -7,7 +7,7 @@ import  React, {
 } from 'react';
 // import { useRouter } from 'next/router';
  // import WalletConnectProvider from '@walletconnect/web3-provider';
-import { Contract, ethers, providers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { AvaAddress, ArbAddress } from '../config';
 import WalletLink from 'walletlink';
 import { SSX } from '@spruceid/ssx'; 
@@ -203,14 +203,15 @@ const AuthProvider = ({ children }) => {
     const web3Provider = new providers.Web3Provider(providerss);
     const network = (await web3Provider.getNetwork()) as any;
     
-    let contractAddress;
-    let rpcUrl;
+    let contractAddress: string;
+    let rpcUrl: string | ethers.utils.ConnectionInfo | undefined;
   
     if (network.chainId === 43113) {
-      contractAddress = ArbAddress;
-      rpcUrl = 'https://arb1.arbitrum.io/rpc';
-    } else {
+
       contractAddress = AvaAddress;
+      rpcUrl = 'https://rpc.ankr.com/avalanche_fuji';
+    } else {
+      contractAddress = ArbAddress;
       rpcUrl = 'https://goerli-rollup.arbitrum.io/rpc';
     }
   

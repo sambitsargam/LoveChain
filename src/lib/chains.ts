@@ -67,12 +67,12 @@ const supportedChains: IChainData[] = [
   },
   {
     name: "Arbitrum Testnet",
-    short_name: "ark",
+    short_name: "arb",
     chain: "ETH",
     network: "arbitrum",
-    chain_id: 421611,
-    network_id: 421611,
-    rpc_url: "https://arb1.arbitrum.io/rpc",
+    chain_id: 421613,
+    network_id: 421613,
+    rpc_url: "https://goerli-rollup.arbitrum.io/rpc",
     native_currency: {
       symbol: "ETH",
       name: "Ethereum",
