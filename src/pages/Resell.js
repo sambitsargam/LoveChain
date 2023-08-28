@@ -95,7 +95,7 @@ export default function Resell() {
           <span>Assets Price</span>
           <Input
             className="mt-1"
-            placeholder="assets price in ETH"
+            placeholder="assets price in AVAX"
             value={assetprice}
             onChange={(e) => {
               setassetprice(e.target.value);
@@ -124,7 +124,7 @@ export default function Resell() {
                 </div>
                 <h5 class="text-md font-bold w-9/12 dark:text-white text-white rounded-full px-1 bg-yellow-300 ">
                   {ethers.utils.formatEther(item?.price?.toString())}
-                  ETH
+                  AVAX
                 </h5>
                 <p class="mt-1 text-sm dark:text-gray-200 text-gray-500">
                   {item.description}
