@@ -24,7 +24,6 @@ function Header() {
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        console.log("Success:", data);
         setAvatar(data.avatar);
         setENS(data.ens);
       })
@@ -90,7 +89,7 @@ function Header() {
                 alt="Bonnie image"
               />
             )}
-          {ens === undefined || !address ? (console.log("ens is undefined")) :
+          {ens === undefined || !address ? (<div className="text-gray-600 text-xl dark:text-gray-300">{address} </div>) :
               (<div className="text-gray-600 text-xl dark:text-gray-300">
                 {ens}
               </div>)}
