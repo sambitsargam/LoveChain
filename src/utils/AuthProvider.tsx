@@ -7,8 +7,8 @@ import  React, {
 } from 'react';
 // import { useRouter } from 'next/router';
  // import WalletConnectProvider from '@walletconnect/web3-provider';
-import { ethers, providers } from 'ethers';
-import { AvaAddress } from '../config';
+import { Contract, ethers, providers } from 'ethers';
+import { AvaAddress, ArbAddress } from '../config';
 import WalletLink from 'walletlink';
 import { SSX } from '@spruceid/ssx'; 
 import Lovechain from "./Lovechain.json";
@@ -199,29 +199,43 @@ const AuthProvider = ({ children }) => {
   } = state;
 
   async function loadContracts() {
-    /* create a generic provider and query for unsold market items */
-    // const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/avalanche_fuji');
-
+    const providerss = await web3Modal.connect();
+    const web3Provider = new providers.Web3Provider(providerss);
+    const network = (await web3Provider.getNetwork()) as any;
+    
+    let contractAddress;
+    let rpcUrl;
+  
+    if (network.chainId === 43113) {
+      contractAddress = ArbAddress;
+      rpcUrl = 'https://arb1.arbitrum.io/rpc';
+    } else {
+      contractAddress = AvaAddress;
+      rpcUrl = 'https://goerli-rollup.arbitrum.io/rpc';
+    }
+  
+    // Create a generic provider and query for unsold market items
+    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+  
     const contract = new ethers.Contract(
-      AvaAddress,
+      contractAddress,
       Lovechain.abi,
       provider
     );
-
+  
     const { chainId } = await provider.getNetwork();
     if (chainId) {
       dispatch({
         type: 'SET_CONTRACT',
         contract: contract,
       });
-
+  
       // const data = await contract.donationCount();
     } else {
       window.alert('Donation contract not deployed to detected network');
     }
   }
-
+  
 
   const connect = useCallback(async function () {
     const provider = await web3Modal.connect();
@@ -233,7 +247,7 @@ const AuthProvider = ({ children }) => {
     const network = (await web3Provider.getNetwork()) as any;
       
 
-    if (network.chainId === 43113) {
+    if (network.chainId === 43113 || network.chainId === 421613) {
         const ssx = new SSX();
         // const ssx = new SSX({
         //   resolveEns: {
@@ -245,7 +259,7 @@ const AuthProvider = ({ children }) => {
         //   }
         // });
         const session = await ssx.signIn();
-        console.log('Already on avalanche testnet',session);
+        console.log('Already on Network',session);
       } else {
       const customChainConfig = {
         chainId: "0xa869", // Chain ID of Avalanche Fuji Testnet
