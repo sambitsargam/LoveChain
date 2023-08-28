@@ -3,7 +3,7 @@
 // import Link from "next/link";
 import ThemeChanger from "./DarkSwitch";
 import { Disclosure } from "@headlessui/react";
-import logo from "../../public/img/productify-logo.svg";
+import logo from "../../assets/logo.png";
 
 export default function Navbar() {
   const navigation = ["Product", "Features", "Pricing", "Company", "Blog"];

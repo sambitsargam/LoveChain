@@ -66,7 +66,7 @@ function Login() {
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
               <h1 className="mb-0 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                Welcome to destore 🎉
+                Welcome to LoveChain 🎉
               </h1>
               <p className="mb-4">web3 decentralize storage Platform</p>
               <Label>

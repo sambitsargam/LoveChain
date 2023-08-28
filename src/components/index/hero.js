@@ -27,14 +27,14 @@ export default function Hero() {
           <div className="max-w-2xl mb-8">
             <h1 className="text-3xl font-bold leading-snug tracking-tight text-blue-800 lg:text-4xl lg:leading-tight xl:text-5xl xl:leading-tight dark:text-white">
               <span className="text-transparent text-blue-400">
-                Destore.
+                LoveChain.
               </span>{" "}
             </h1> 
             <h1 className="text-3xl font-bold leading-snug tracking-tight text-white-800 lg:text-2xl lg:leading-tight xl:text-5xl xl:leading-tight dark:text-white">
               Get <span ref={el}></span> All in one app
             </h1>
             <p className="py-5 text-xl leading-normal text-gray-600 lg:text-xl xl:text-2xl dark:text-gray-300">
-              Destore a decentralise storage online Platforms with NFT and
+              LoveChain a decentralise storage online Platforms with NFT and
               Chatting capabilities.Users can choose to store their data on IPFS
               or Web3 Storage.
             </p>

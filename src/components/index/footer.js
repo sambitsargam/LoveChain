@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import Container from "./container";
-import heroImg from "../../public/img/productify-logo.svg";
+import heroImg from "../../assets/logo.png";
 
 export default function Footer() {
   const navigation = ["Product", "NFT", "Chat"];
@@ -25,13 +25,13 @@ export default function Footer() {
                     className="w-8"
                   />
                 </span>
-                <span>Destore</span>
+                <span>LoveChain</span>
               </a>
               {/* </Link> */}
             </div>
 
             <div className="max-w-md mt-4 text-gray-500 dark:text-gray-400">
-              Destore a decentralise storage online Platforms with NFT and
+              LoveChain a decentralise storage online Platforms with NFT and
               Chatting capabilities. Users can store their data on IPFS or Web3
               Storage. Users can access files directly through web browser
               without using any third party software.

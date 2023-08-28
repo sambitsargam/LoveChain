@@ -34,18 +34,18 @@ const benefitOne = {
 };
 
 const benefitTwo = {
-  title: "And even more with Destore...",
+  title: "And even more with LoveChain...",
   // desc: "It is secure and unchangeable because of the use of blockchain. indicating that nobody can manipulate your data",
   image: benefitOneImg,
   bullets: [
     {
       title: "NFT Token",
-      desc: "Mint NFT directly from files saved on Destore ",
+      desc: "Mint NFT directly from files saved on LoveChain ",
       icon: <DevicePhoneMobileIcon />,
     },
     {
       title: "Chat",
-      desc: "Send  messages with anyone you want using destore",
+      desc: "Send  messages with anyone you want using LoveChain",
       icon: <AdjustmentsVerticalIcon />,
     },
     {

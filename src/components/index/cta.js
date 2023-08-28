@@ -10,7 +10,7 @@ export default function Cta() {
             You've Scroll to this far?
           </h2>
           <p className="mt-2 font-medium text-white text-opacity-90 lg:text-xl">
-            Click on the button here to try Destore for free
+            Click on the button here to try LoveChain for free
           </p>
         </div>
         <div className="flex-shrink-0 w-full text-center lg:w-auto">

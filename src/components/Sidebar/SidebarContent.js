@@ -10,7 +10,7 @@ import { Button } from "@windmill/react-ui";
 import ens from "../../assets/ens.svg"
 import WS from "../../assets/img/ws.png";
 import union from "../../assets/union.png"
-import Logo from "../../assets/productify-logo.svg";
+import Logo from "../../assets/logo.png";
 import SP from "../../assets/spp.png";
 import ava from "../../assets/ava.svg";
 import arb from "../../assets/arb.png";
