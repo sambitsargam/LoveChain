@@ -7,10 +7,10 @@ export default function Hero() {
   const el = useRef(null);
   useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ["Storage 💾", "NFT 🎨", "Chat 💬"], // Strings to display
+      strings: ["Dating ❤️", "Storage 💾", "NFT 🎨", "Chat 💬","Your Love ❤️"],
       // Speed settings, try diffrent values untill you get good results
       startDelay: 300,
-      typeSpeed: 100,
+      typeSpeed: 80,
       backSpeed: 100,
       backDelay: 100,
     });
@@ -34,9 +34,8 @@ export default function Hero() {
               Get <span ref={el}></span> All in one app
             </h1>
             <p className="py-5 text-xl leading-normal text-gray-600 lg:text-xl xl:text-2xl dark:text-gray-300">
-              LoveChain a decentralise storage online Platforms with NFT and
-              Chatting capabilities.Users can choose to store their data on IPFS
-              or Web3 Storage.
+            LoveChain is your ultimate dating platform that fosters genuine connections. Alongside features like secure data storage, an NFT marketplace, and real-time chat capabilities, It's core essence lies in bringing people together to create lasting bonds of love and companionship.
+
             </p>
 
             <div className="flex flex-col items-start space-x-3 space-y-3 sm:space-y-0 sm:items-center sm:flex-row">
