@@ -209,7 +209,7 @@ const AuthProvider = ({ children }) => {
     if (network.chainId === 43113) {
 
       contractAddress = AvaAddress;
-      rpcUrl = 'https://rpc.ankr.com/avalanche_fuji';
+      rpcUrl = 'https://api.avax-test.network/ext/bc/C/rpc';
     } else {
       contractAddress = ArbAddress;
       rpcUrl = 'https://goerli-rollup.arbitrum.io/rpc';
