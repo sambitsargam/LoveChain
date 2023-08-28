@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button } from "@windmill/react-ui";
+import { AuthContext } from "../utils/AuthProvider";
 
 function Chat() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { address, signer, connect } = useContext(AuthContext);
 
-  const currentUserAddress = "0x46E9492E532567339F1bF2aFd679b21391ae6a0f"; // Replace with the user's address
+
+ // const currentUserAddress = "0x46E9492E532567339F1bF2aFd679b21391ae6a0f"; // Replace with the user's address
 
   useEffect(() => {
     setLoading(true);
@@ -51,7 +54,7 @@ function Chat() {
               users.map((user) => (
                 <div key={user.id} className="bg-blue-100 p-4 my-4 rounded-lg">
                   <p className="text-center">Wanna Chat 😍 {user.receiver}</p>
-                  {user.sender === currentUserAddress ? (
+                  {user.sender === address ? (
                     <Button
                       onClick={() => handleChatStart(user.receiver)}
                       block
