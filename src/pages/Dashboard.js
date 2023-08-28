@@ -102,6 +102,7 @@ function Buttons() {
     let txReceipt = await transaction.wait();
     setisloading(false);
     setVisible(false);
+    allUsers();
   };
 
   const onTipUser = async () => {
