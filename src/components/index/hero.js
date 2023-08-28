@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Container from "./container";
-import heroImg from "../../public/img/hero.svg";
+import heroImg from "../../assets/1.svg";
 import Typed from "typed.js";
 
 export default function Hero() {

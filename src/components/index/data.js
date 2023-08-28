@@ -7,8 +7,8 @@ import {
   FaceSmileIcon,
 } from "@heroicons/react/24/outline";
 
-import benefitOneImg from "../../public/img/benefit-one.png";
-import benefitTwoImg from "../../public/img/benefit-two.png";
+import benefitTwoImg from "../../assets/2.svg";
+import benefitOneImg from "../../assets/3.svg";
 const benefitOne = {
   title: "Storage",
   // desc: "ou have the freedom to choose whether to store your data on IPFS or Web3 storage.",
