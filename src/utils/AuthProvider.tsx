@@ -6,7 +6,7 @@ import  React, {
   useReducer,
 } from 'react';
 // import { useRouter } from 'next/router';
-// import WalletConnectProvider from '@walletconnect/web3-provider';
+ // import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers, providers } from 'ethers';
 import { AvaAddress } from '../config';
 import WalletLink from 'walletlink';
@@ -46,15 +46,15 @@ export const AuthContext = createContext<authContextType>(
   authContextDefaultValues
   );
   
-  const INFURA_ID = 'bbd04f1c052343db95c2aaaa53302ca7';
+const INFURA_ID = 'bbd04f1c052343db95c2aaaa53302ca7';
 
 const providerOptions = {
-  // walletconnect: {
-  //   package: WalletConnectProvider, // required
-  //   options: {
-  //     infuraId: INFURA_ID, // required
-  //   },
-  // },
+//    walletconnect: {
+//     package: WalletConnectProvider, // required
+//    options: {
+//       infuraId: INFURA_ID, // required
+//     },
+//  },
 
   'custom-walletlink': {
     display: {
