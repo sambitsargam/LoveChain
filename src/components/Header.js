@@ -17,8 +17,8 @@ function Header() {
   const [ens, setENS] = useState('');
 
   //fetch the address from local storage
-  const addr = localStorage.getItem("address");
-  const apiUrl = `https://ensdata.net/${addr}`;
+  // const addr = localStorage.getItem("address");
+  const apiUrl = `https://ensdata.net/${address}`;
 
   useEffect(() => {
     fetch(apiUrl)
