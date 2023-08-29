@@ -116,7 +116,7 @@ function Buttons() {
     setVisible(false);
   };
 
-  const chatamount = "0.2";
+  const chatamount = 0.2;
   const onChatUser = async (add) => {
      const amount_ = ethers.utils.parseUnits(chatamount, "ether");
      let transaction = await signer.tipUser(userid, {
