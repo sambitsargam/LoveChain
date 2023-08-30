@@ -76,7 +76,7 @@ LoveChain welcomes contributions from the community to enhance its features, sec
 
 ## License
 
-This project is licensed under the [UNLICENSED](LICENSE) License.
+This project is licensed under the [MIT LICENSED](LICENSE) License.
 
 ## How to Contribute
 
