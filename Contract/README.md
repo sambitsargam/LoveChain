@@ -47,7 +47,7 @@ The contract is deployed at the following address on the Arbitrium testnet netwo
 
 ## License
 
-This project is licensed under the UNLICENSED license - see the [./LICENSE](LICENSE) file for details.
+This project is licensed under the UNLICENSED license - see the [LICENSE](./LICENSE) file for details.
 
 ---
 
