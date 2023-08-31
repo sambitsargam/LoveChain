@@ -1,5 +1,6 @@
 # LoveChain
 
+
 LoveChain is a revolutionary decentralized dating protocol that empowers users to connect, interact, and build meaningful relationships in a secure and transparent environment. Built on the Ethereum blockchain and integrating cutting-edge technologies, LoveChain redefines the dating experience through decentralized principles and innovative solutions.
 
 ## Introduction
@@ -46,28 +47,32 @@ LoveChain allows users to chat with each other but you have to pay for that. Use
 LoveChain integrates a sophisticated blend of cutting-edge technologies to deliver a robust and engaging decentralized dating experience:
 
 
-### Ethereum Name Service (ENS)
+### 1 Ethereum Name Service (ENS)
 
 LoveChain taps into the Ethereum Name Service (ENS) to provide users with easily recognizable usernames and avatars. ENS replaces complex Ethereum addresses with human-readable names, enhancing the profile verification process. This integration simplifies user interactions, enabling seamless identification and communication across the platform. Profile Verifications is done by ENS.
 
-### Spruce ID
+### 2 Spruce ID
 
 Spruce ID revolutionizes LoveChain's authentication mechanism. It offers secure login capabilities, enhancing user account protection and reducing vulnerabilities associated with traditional username/password authentication. Additionally, Spruce ID associates media storage with Web3.storage through Kepler, ensuring efficient and secure storage of user media files.
 
-### Union Finance
+### 3 Union Finance
 
 Incorporating Union Finance amplifies LoveChain's financial capabilities. Through Union Finance's backend integration, LoveChain introduces a seamless financial aspect to the dating protocol. Users can know union finance status.
 
-### Avalanche
+### 4 Avalanche
 
 Avalanche is utilized as a deployment platform, contributing to the efficiency and scalability of LoveChain. By leveraging Avalanche's consensus mechanism and high throughput capabilities, LoveChain ensures rapid and cost-effective contract deployment, supporting a responsive and user-friendly platform.
 
-### Arbitrum
+### 5 Arbitrum
 
 Arbitrum plays a pivotal role in LoveChain's optimization strategy. Employed for contract deployment, Arbitrum enhances the performance and cost-effectiveness of LoveChain's operations. This integration results in faster transaction processing, reduced gas fees, and an overall improved experience for LoveChain users.
 
 LoveChain's technological amalgamation ensures a user-centric, secure, and innovative platform, reimagining the dating experience through decentralized principles and advanced blockchain technologies.
 
+## 🚀 Demo
+* Live Site Link:  https://lovechain.vercel.app/
+* Full Project Video: https://youtu.be/vpaf9pJI1hQ
+* Only Features Demo Video: https://youtu.be/UhWTS94_AkI
 ## Contribution
 
 LoveChain welcomes contributions from the community to enhance its features, security, and user experience. Whether you're a developer, designer, or enthusiast, your expertise can shape the future of decentralized dating. Join us in building a safer, more transparent, and innovative dating ecosystem.
