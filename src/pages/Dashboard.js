@@ -291,7 +291,7 @@ function Buttons() {
             onChange={(e) => {
               setamount(e.target.value);
             }}
-            placeholder="Enter amount(avax)"
+            placeholder="Enter amount(tFIL)"
           />
         </Modal.Body>
         <Modal.Footer>
@@ -418,7 +418,7 @@ function Buttons() {
                 </li>
               </ul>
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
-                {ethers.utils.formatEther(user.balance.toString())} AVAX
+                {ethers.utils.formatEther(user.balance.toString())} tFIL
               </p>
             </div>
           </div>

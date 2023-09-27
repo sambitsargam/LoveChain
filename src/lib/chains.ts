@@ -65,6 +65,23 @@ const supportedChains: IChainData[] = [
       balance: "",
     },
   },
+  // filecoin testnet
+  {
+    name: "Filecoin Testnet",
+    short_name: "t-fil",
+    chain: "FIL",
+    network: "filecoin",
+    chain_id: 314159,
+    network_id: 314159,
+    rpc_url: "https://api.calibration.node.glif.io/rpc/v1",
+    native_currency: {
+      symbol: "tFIL",
+      name: "Filecoin",
+      decimals: "18",
+      contractAddress: "",
+      balance: "",
+    },
+  },
   {
     name: "Arbitrum Testnet",
     short_name: "arb",

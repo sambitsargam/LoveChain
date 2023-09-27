@@ -204,16 +204,14 @@ const AuthProvider = ({ children }) => {
     
     let contractAddress: string;
     let rpcUrl: string | ethers.utils.ConnectionInfo | undefined;
-  
-    if (network.chainId === 43113) {
-
+    if (network.chainId === 314159) {
       contractAddress = AvaAddress;
-      rpcUrl = 'https://api.avax-test.network/ext/bc/C/rpc';
+      rpcUrl = 'https://api.calibration.node.glif.io/rpc/v1';
+     
     } else {
       contractAddress = ArbAddress;
-      rpcUrl = 'https://goerli-rollup.arbitrum.io/rpc';
+      rpcUrl = 'https://arb1.arbitrum.io/rpc';
     }
-  
     // Create a generic provider and query for unsold market items
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
   
@@ -247,7 +245,7 @@ const AuthProvider = ({ children }) => {
     const network = (await web3Provider.getNetwork()) as any;
       
 
-    if (network.chainId === 43113 || network.chainId === 421613) {
+    if (network.chainId === 314159) {
         // const ssx = new SSX({
         //   resolveEns: {
         //     resolveOnServer: false, // false as default
@@ -260,15 +258,15 @@ const AuthProvider = ({ children }) => {
         console.log('Already on Network');
       } else {
       const customChainConfig = {
-        chainId: "0xa869", // Chain ID of Avalanche Fuji Testnet
-        chainName: "Avalanche Fuji Testnet",
+        chainId: "0x4cb2f", // Chain ID of Filecoin - Calibration testnet
+        chainName: "Filecoin - Calibration testnet",
         nativeCurrency: {
-          name: "avalanche",
-          symbol: "AVAX",
+          name: "filecoin",
+          symbol: "tFIL",
           decimals: 18,
         },
-        rpcUrls: ["https://rpc.ankr.com/avalanche_fuji"],
-        blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+        rpcUrls: ["https://api.calibration.node.glif.io/rpc/v1"],
+        blockExplorerUrls: ["https://calibration.filscan.io/en/"],
       };
 
       try {
@@ -278,13 +276,13 @@ const AuthProvider = ({ children }) => {
             chainId: customChainConfig.chainId,
           },
         ]);
-        alert('Switched to Avalanche testnet... Please  Reconnect');
+        alert('Switched to Filecoin testnet... Please  Reconnect');
      window.location.reload();
       } catch (switchError) {
         // If switching network failed, add the custom network
         await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
         window.location.reload();
-        alert('Added to Avalanche testnet... Please  Reconnect');
+        alert('Added to Filecoin testnet... Please  Reconnect');
         
   }
 }
