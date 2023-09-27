@@ -10,7 +10,7 @@ const Resell = lazy(() => import("../pages/Resell"));
 const NFTDashboard = lazy(() => import("../pages/NFTDashboard"));
 const Page404 = lazy(() => import("../pages/404"));
 const Blank = lazy(() => import("../pages/Blank"));
-const Finance = lazy(() => import("../pages/Union"));
+const Store = lazy(() => import("../pages/Dashboards"));
 const Storage = lazy(() => import("../pages/Storage"));
 
 /**
@@ -37,8 +37,8 @@ const routes = [
     component: Storage,
   },
   {
-    path: "/finance",
-    component: Finance,
+    path: "/store",
+    component: Store,
   },
   {
     path: "/setting",

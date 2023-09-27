@@ -34,9 +34,9 @@ const routes = [
     name: " Storage",
   },
   {
-    path: "/app/finance",
-    icon: <UserGroupIcon className="h-6" />,
-    name: "Finance",
+    path: "/app/store",
+    icon: <ServerStackIcon className="h-6" />,
+    name: "Storage Market",
   },
   {
     path: "/app/chat",

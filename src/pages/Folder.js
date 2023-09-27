@@ -1,10 +1,3 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable eqeqeq */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-"use client";
-import { SSX } from "@spruceid/ssx";
 import React, { useState, useEffect, useContext } from "react";
 import { FolderOpenIcon } from "@heroicons/react/24/solid";
 import { useParams, useHistory, Link } from "react-router-dom";
@@ -26,6 +19,7 @@ import { AuthContext } from "../utils/AuthProvider";
 import prettyBytes from "pretty-bytes";
 import DownloadLink from "react-download-link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+
 import {
   TableBody,
   TableContainer,
@@ -58,17 +52,46 @@ import Image2 from "../assets/img/create-account-office.jpeg";
 import Image3 from "../assets/img/forgot-password-office-dark.jpeg";
 import Image4 from "../assets/img/forgot-password-office.jpeg";
 import WS from "../assets/img/ws.png";
-import FolderCard from "./Cards/FolderCard";
+import IPFS from "../assets/img/ipfs.png";
+import Moralis from "../assets/img/moralis.png";
+import FolderCard from "../components/Cards/FolderCard";
 import { ellipseAddress, timeConverter } from "../lib/utilities";
 import { Loading } from "@nextui-org/react";
 
-const KeplerStorageComponent = ({ ssx }) => {
-  const [key, setKey] = useState('');
-  const [value, setValue] = useState('');
-  const [contentList, setContentList] = useState([]);
-  const [viewingContent, setViewingContent] = useState(null);
-  const [loading, setLoading] = useState(false);
+function Dashboard() {
   const [token, settoken] = useState("");
+  const [projectid, setprojectid] = useState("");
+  const [projectsecrete, setprojectsecrete] = useState("");
+
+  function getAccessToken() {
+    // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNCQzQzMDliYTJGRGIxMDZGZWM0YzJGMTJiZmE4RTMwQTUzMTZiZDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjI0OTA3ODUyMjUsIm5hbWUiOiJkZWNlbnRyb2dlIn0.kcD-OCoPPtPAYR9Ph_cOfz0A9Jl_KamPPmo20j0Q1Dc";
+    return token;
+  }
+
+  function makeStorageClient() {
+    return new Web3Storage({ token: getAccessToken() });
+  }
+
+  // const projectId = "2DB3mQQJtzIC03GYarET8tFZJIm";
+  const projectId = projectid;
+  const projectSecret = projectsecrete;
+  // const projectSecret = "0dedd8064ff788414096e72cc7e3f4a1";
+  const auth =
+    "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+  const ipfsClient = require("ipfs-http-client");
+  console.log(auth);
+  const ipfs = ipfsClient.create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+    apiPath: "/api/v0",
+    headers: {
+      authorization: auth,
+    },
+  });
+
+  const { address, signer, contract, provider, chainId, connect } =
+    useContext(AuthContext);
   let { foldername, id } = useParams();
   const [fileinfo, setfileinfo] = useState({});
   const [copied, setcopied] = useState(false);
@@ -82,58 +105,9 @@ const KeplerStorageComponent = ({ ssx }) => {
   const [files, setfiles] = useState([]);
   const [fileready, setfileready] = useState(false);
   const [fileModal, setFileModal] = useState(false);
-  const [filename, setfilename] = useState(false);
   // pagination setup
   const resultsPerPage = 10;
   const totalResults = files?.length;
-
-  // get address from local storage
-  const address = localStorage.getItem("address");
-  useEffect(() => {
-    getContentList();
-  }, []);
-
-  const getContentList = async () => {
-    setLoading(true);
-    try {
-      const { data } = await ssx.storage.list();
-      const filteredData = data.filter((d) => d.includes('/content/'));
-      console.log("filteredData", data);
-      // filterdata=filteredData.remove
-      setContentList(data);
-    } catch (error) {
-      console.error('Error fetching content list:', error);
-    }
-    setLoading(false);
-  };
-
-  function getOnlyName(s) {
-    return s.replace('my-app/content/', '');
-  }
-
-  function getAccessToken() {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGIyMDE1N0IyODJiMkQ5ZThFMzY5MjBGMDhiY0EyZkVhMzRmRTBmYjQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzYyMjU5MjQ3MTEsIm5hbWUiOiJtZW50bGUifQ.wjCD8ygNde_wiV95BPDJFe7KvKcysTTwvz4RcDMwJEw";
-  }
-
-  function makeStorageClient() {
-    return new Web3Storage({ token: getAccessToken() });
-  }
-
-  const handlePostContent = async (key, value) => {
-    if (!key || !value) {
-      alert('Invalid key or value');
-      return;
-    }
-    console.log("key", key);
-    setLoading(true);
-    await ssx.storage.put(key, value);
-    const formatedKey = 'content/' + key.replace(/\ /g, '_');
-    setContentList((prevList) => [...prevList, `my-app/${formatedKey}`]);
-    console.log("contentList", contentList);
-    setKey('');
-    setValue('');
-    setLoading(false);
-  };
 
   // pagination change control
   function onPageChange(p) {
@@ -141,6 +115,43 @@ const KeplerStorageComponent = ({ ssx }) => {
   }
 
   let isActive = localStorage.getItem("isActive");
+
+  async function loadPlatforms() {
+    let active = localStorage.getItem("isActive");
+    if (active == "ipfs") {
+      const data = await signer?.getPlatforms();
+      const filterr = data.filter((items) => items.platformName == "IPFS");
+      setprojectid(filterr[0]?.platformid);
+      setprojectsecrete(filterr[0]?.platformsecret);
+      console.log(filterr[0]?.platformid);
+      console.log(filterr[0]?.platformsecret);
+    } else {
+      const data = await signer?.getPlatforms();
+      const filterr = data.filter(
+        (items) => items.platformName == "Web3 Storage"
+      );
+      settoken(filterr[0]?.token);
+      console.log(filterr[0]?.token);
+    }
+    // setplatforms(data);
+  }
+
+  async function loadfiles() {
+    const data = await signer?.getFiles(id);
+    // console.log(data);
+    setfiles(data);
+    console.log("files ----------", data);
+  }
+
+  useEffect(() => {
+    loadfiles();
+    loadPlatforms();
+  }, [signer, fileready]);
+
+  // here you would make another server request for new data
+  useEffect(() => {
+    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+  }, [page]);
 
   const fileFormatIcon = (type) => {
     if (type == "pdf") {
@@ -154,6 +165,11 @@ const KeplerStorageComponent = ({ ssx }) => {
     }
   };
 
+  function getExtension() {
+    return filetype.split(".").pop();
+  }
+
+  //web3 storage
   async function onChangeCoverImage(e) {
     setisloading(true);
     const files = e.target.files[0];
@@ -168,16 +184,16 @@ const KeplerStorageComponent = ({ ssx }) => {
         `failed to get ${cid} - [${res.status}] ${res.statusText}`
       );
     }
+
+    // unpack File objects from the response
     const filess = await res.files();
     setFile(`https://${cid}.ipfs.dweb.link/${files.name}`);
     // console.log(file);
     console.log(files);
     setisloading(false);
-    const values = (`https://${cid}.ipfs.dweb.link/${files.name}`);
     for (const file of filess) {
       setfiletype(file.name);
       setfilesize(file.size);
-      await handlePostContent(file.name, values);
       console.log(
         `${file.cid} -- ${file.path} -- ${file.size} -- ${file.name}`
       );
@@ -189,34 +205,51 @@ const KeplerStorageComponent = ({ ssx }) => {
     console.log("Error:", err); // Write your own logic
   };
 
-  const handleGetContent = async (content) => {
-    setLoading(true);
-    const contentName = content.replace('my-app/', '');
-    const { data } = await ssx.storage.get(contentName);
-    setViewingContent(`${content}:\n${data}`);
-    setfilename(contentName)
-    setfileinfo(data);
-    setLoading(false);
-  };
+  //ipfs
+  async function onChange(e) {
+    setisloading(true);
+    const file = e.target.files[0];
+    console.log(file);
+    try {
+      const added = await ipfs.add(file, {
+        progress: (prog) => console.log(`received: ${prog}`),
+      });
 
-  console.log("Viewing content:", viewingContent);
-
-  const handleDeleteContent = async (content) => {
-    setLoading(true);
-    const contentName = content.replace('my-app/', '');
-    await ssx.storage.delete(contentName);
-    setContentList((prevList) => prevList.filter((c) => c !== content));
-    setLoading(false);
-  };
-
-
-  function getExtension(file) {
-    const filename = String(file); // Convert to string if not already
-    return filename.split(".").pop();
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+      console.log(url);
+      setFile(url);
+      setisloading(false);
+      setfiletype(file.name);
+      setfilesize(file.size);
+      // setFileUrl(url);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
   }
 
+  const onUploadFile = async () => {
+    setisfileuploading(true);
+    let transaction = await signer.addFiles(
+      id,
+      file,
+      filesize,
+      getExtension(),
+      filetype,
+      ""
+    );
 
+    let txReceipt = await transaction.wait();
+    const [transferEvent] = txReceipt.events;
+    console.log(transferEvent);
+    setisfileuploading(false);
+    setFile("");
+    setfileready(true);
 
+    // history.push(0);
+    // const { foldername, _id } = transferEvent.args;
+    // history.push(`/app/folder/${foldername.toString()}/${_id.toString()}`);
+    // console.log(foldername, _id);
+  };
 
   return (
     <>
@@ -238,7 +271,7 @@ const KeplerStorageComponent = ({ ssx }) => {
               filename="myfile.txt"
               exportFile={() => "My cached data"}
             /> */}
-            <DownloadLink filename={fileinfo}>
+            <DownloadLink filename={fileinfo.fileHash}>
               {/* <Button block size="large">
                 Download
               </Button> */}
@@ -248,7 +281,7 @@ const KeplerStorageComponent = ({ ssx }) => {
       >
         <div className="mb-4">
           <CopyToClipboard
-            text={fileinfo}
+            text={fileinfo.fileHash}
             onCopy={() => {
               setcopied(true);
             }}
@@ -262,8 +295,8 @@ const KeplerStorageComponent = ({ ssx }) => {
         {/* <img src={Image1} className="rounded-lg" /> */}
         <div className="h-48 rounded-lg w-full">
           <FileViewer
-            filePath={fileinfo}
-            fileType={getExtension(fileinfo)}
+            fileType={fileinfo.fileType}
+            filePath={fileinfo.fileHash}
             // errorComponent={CustomErrorComponent}
             onError={onError}
           />
@@ -274,6 +307,12 @@ const KeplerStorageComponent = ({ ssx }) => {
               <tr className="">
                 <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
                   <div class="flex items-center">Type</div>
+                </th>
+                <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                  <div class="flex items-center">Size</div>
+                </th>
+                <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
+                  <div class="flex items-center">Created</div>
                 </th>
                 <th class="p-4 font-medium text-left text-gray-900 dark:text-gray-300 whitespace-nowrap">
                   <div class="flex items-center">Platform</div>
@@ -288,15 +327,25 @@ const KeplerStorageComponent = ({ ssx }) => {
               <tr>
                 <td class="p-4 font-medium text-gray-900 dark:text-gray-300 flex flex-col justify-start items-center whitespace-nowrap">
                   <DocumentTextIcon className="h-6 dark:text-gray-200" />{" "}
-                  <span>Image</span>
+                  <span>{fileinfo.fileType}</span>
+                </td>
+                <td class="p-4 text-gray-700 dark:text-gray-300  whitespace-nowrap">
+                  <ServerIcon className="h-6  dark:text-gray-200" />{" "}
+                  <span>
+                    {prettyBytes(parseInt(fileinfo?.fileSize?.toString()) || 0)}
+                  </span>
+                </td>
+                <td class="p-4 text-gray-700 dark:text-gray-300 items-center whitespace-nowrap">
+                  <CalendarIcon className="h-6  dark:text-gray-200" />{" "}
+                  <span>{fileinfo?.uploadTime?.toString()}</span>
                 </td>
                 <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <ShieldCheckIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>Keepler</span>
+                  <span>IPFS</span>
                 </td>
                 <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <UserIcon className="h-6  dark:text-gray-200" />{" "}
-                  <span>{ellipseAddress(address)}</span>
+                  <span>{ellipseAddress(fileinfo.sender)}</span>
                 </td>
                 {/* <td class="p-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   <LockClosedIcon className="h-6  dark:text-gray-200" />{" "}
@@ -338,12 +387,20 @@ const KeplerStorageComponent = ({ ssx }) => {
             type="file"
             name="file_upload"
             class="hidden"
-            onChange={onChangeCoverImage}
-          // onChange={onChange}
-          // onChange={sendFileToIPFS}
+            onChange={isActive === "ipfs" ? onChange : onChangeCoverImage}
+            // onChange={onChange}
+            // onChange={sendFileToIPFS}
           />
         </label>
       </div>
+      {file && (
+        <FileViewer
+          fileType={getExtension()}
+          filePath={file}
+          // errorComponent={CustomErrorComponent}
+          onError={onError}
+        />
+      )}
 
       {isloading ? (
         <Progress
@@ -356,68 +413,94 @@ const KeplerStorageComponent = ({ ssx }) => {
         ""
       )}
 
-
+      {file && (
+        <button
+          onClick={() => {
+            onUploadFile();
+          }}
+          className="bg-blue-600 items-center space-x-4 flex rounded-full px-8 py-2 text-white item-center m-auto mt-4 mb-4"
+        >
+          Upload
+        </button>
+      )}
+      {isfileuploading ? (
+        <Progress
+          indeterminated
+          value={50}
+          color="secondary"
+          status="secondary"
+        />
+      ) : (
+        ""
+      )}
       {/* <FilePreview type={"file"} file={file} onError={onError} /> */}
       {/* {file && <img className="rounded mt-4" width="full" src={file} />} */}
-      <PageTitle>Files in your Drive</PageTitle>
+      <PageTitle>Files in {foldername}</PageTitle>
 
       <TableContainer>
         <Table>
           <TableHeader>
             <tr>
               <TableCell>Name</TableCell>
-              <TableCell>GET</TableCell>
-              <TableCell>DELETE</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>File Size</TableCell>
+              <TableCell>Upload Time</TableCell>
+              <TableCell>Action</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
-            {contentList?.map((content, i) => (
-              <TableRow key={i}> 
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    {fileFormatIcon("png")}
-                    <div>
-                      <p className="font-semibold">{getOnlyName(content)}</p>
+            {files
+              ?.map((files, i) => (
+                <TableRow
+                  onClick={() => {
+                    setFileModal(true);
+                    setfileinfo(files);
+                  }}
+                >
+                  <TableCell>
+                    <div className="flex items-center text-sm">
+                      {fileFormatIcon(files.fileType)}
+                      <div>
+                        <p className="font-semibold">{files.fileName}</p>
+                      </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span>
-                    <Button onClick={() => {
-                      handleGetContent(content)
-                      setFileModal(true);
-                    }}>
-                      GET
-                    </Button>
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span>
-                    <Button onClick={() => handleDeleteContent(content)}>
-                      DELETE
-                    </Button>
-                  </span>
-                </TableCell>
-                <TableCell>
-                  {/* <p>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm"> {files.fileType}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span>
+                      {prettyBytes(parseInt(files?.fileSize?.toString()) || 0)}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span>{timeConverter(files?.uploadTime?.toString())}</span>
+                  </TableCell>
+                  <TableCell>
+                    {/* <p>
                       {String(
                         files?.fileType != "mp3" &&
                           files?.fileType != "mp4" &&
                           files?.fileType != "pdf"
                       )}
                     </p> */}
-                    <Button
-                      onClick={() => {
-                      localStorage.setItem("nftstring", fileinfo );
-                        localStorage.setItem("nftactive", true);
-                      }}
-                    >
-                      <Link to="/app/nft">Use as NFT</Link>
-                    </Button>
-                </TableCell>
-              </TableRow>
-            ))
+                    {files?.fileType != "mp3" &&
+                    files?.fileType != "mp4" &&
+                    files?.fileType != "pdf" ? (
+                      <Button
+                        onClick={() => {
+                          localStorage.setItem("nftstring", files?.fileHash);
+                          localStorage.setItem("nftactive", true);
+                        }}
+                      >
+                        <Link to="/app/nft">Use as NFT</Link>
+                      </Button>
+                    ) : (
+                      ""
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
               .reverse()}
           </TableBody>
         </Table>
@@ -434,4 +517,4 @@ const KeplerStorageComponent = ({ ssx }) => {
   );
 }
 
-export default KeplerStorageComponent;
+export default Dashboard;

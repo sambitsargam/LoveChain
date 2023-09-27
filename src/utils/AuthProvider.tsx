@@ -10,7 +10,6 @@ import  React, {
 import { ethers, providers } from 'ethers';
 import { AvaAddress, ArbAddress } from '../config';
 import WalletLink from 'walletlink';
-import { SSX } from '@spruceid/ssx'; 
 import Lovechain from "./Lovechain.json";
 import Web3Modal from 'web3modal';
 import {  getChainData } from '../lib/utilities';
@@ -249,7 +248,6 @@ const AuthProvider = ({ children }) => {
       
 
     if (network.chainId === 43113 || network.chainId === 421613) {
-        const ssx = new SSX();
         // const ssx = new SSX({
         //   resolveEns: {
         //     resolveOnServer: false, // false as default
@@ -259,8 +257,7 @@ const AuthProvider = ({ children }) => {
         //     }
         //   }
         // });
-        const session = await ssx.signIn();
-        console.log('Already on Network',session);
+        console.log('Already on Network');
       } else {
       const customChainConfig = {
         chainId: "0xa869", // Chain ID of Avalanche Fuji Testnet
