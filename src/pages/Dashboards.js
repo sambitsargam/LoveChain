@@ -45,7 +45,7 @@ import Image1 from "../assets/img/create-account-office-dark.jpeg";
 
 import WS from "../assets/img/ws.png";
 import IPFS from "../assets/img/ipfs.png";
-import Moralis from "../assets/img/moralis.png";
+import ls from "../assets/lh.svg";
 import FolderCard from "../components/Cards/FolderCard";
 import { ellipseAddress, timeConverter } from "../lib/utilities";
 
@@ -80,6 +80,7 @@ function Dashboard() {
   const [copied, setcopied] = useState(false);
   // pagination setup
   const [webstorageready, setwebstorageready] = useState(false);
+  const [islighthouse, setislighthouse] = useState(false);
   const [isipfsready, setisipfsready] = useState(false);
   const [currectplatform, setcurrectplatform] = useState([]);
   const [isplatformready, setisplatformready] = useState(false);
@@ -131,6 +132,12 @@ function Dashboard() {
       setisactiveid(res[1]);
       setcurrectplatform(res);
       setwebstorageready(true);
+    } else if (active == "lighthouse") {
+      var res = JSON.parse(localStorage.getItem(active));
+      loadfolders(res[1]);
+      setisactiveid(res[1]);
+      setcurrectplatform(res);
+      setislighthouse(true);
     }
     // loadfolders();
     loadStorages();
@@ -176,10 +183,17 @@ function Dashboard() {
       setwebstorageready(false);
       loadfolders(res[1]);
       setisplatformready(true);
-    } else {
+    } else if (type === "webStorage") {
       var res = JSON.parse(localStorage.getItem(type));
       setwebstorageready(true);
       setisipfsready(false);
+      loadfolders(res[1]);
+      setisplatformready(true);
+    }
+    else if (type === "lighthouse") {
+      var res = JSON.parse(localStorage.getItem(type));
+      setislighthouse(true);
+      setwebstorageready(false);
       loadfolders(res[1]);
       setisplatformready(true);
     }
@@ -434,6 +448,23 @@ function Dashboard() {
               <img src={WS} className="w-8 rounded-lg" />
               <p class="text-xl font-medium text-gray-900 dark:text-gray-300">
                 Web3.storage
+              </p>{" "}
+            </div>
+          </Link>
+          <Link to="/app/storage">
+            <div
+              onClick={() => {
+                setPlatformActive("lighthouse");
+              }}
+              className={` ${
+                islighthouse
+                  ? "mt-5 flex flex-row space-x-3 cursor-pointer items-center border-2 p-3 rounded-lg md:max-w-sm max-w-full border-blue-300"
+                  : "mt-5 flex flex-row space-x-3 cursor-pointer items-center border-2 p-3 rounded-lg md:max-w-sm max-w-full"
+              }  `}
+            >
+              <img src={ls} className="w-8 rounded-lg" />
+              <p class="text-xl font-medium text-gray-900 dark:text-gray-300">
+                Lighthouse
               </p>{" "}
             </div>
           </Link>

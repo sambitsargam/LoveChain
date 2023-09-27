@@ -5,6 +5,7 @@ import ChartCard from "../components/Chart/ChartCard";
 import PageTitle from "../components/Typography/PageTitle";
 import WS from "../assets/img/ws.png";
 import IPFS from "../assets/img/ipfs.png";
+import LH from "../assets/lh.svg";
 import { Input, Label } from "@windmill/react-ui";
 import { AuthContext } from "../utils/AuthProvider";
 import { Loading } from "@nextui-org/react";
@@ -26,6 +27,7 @@ function Charts() {
   const [projectsecret, setprojectsecret] = useState("");
   const [isplatformready, setisplatformready] = useState(false);
   const [webstorageready, setwebstorageready] = useState(false);
+  const [islighthouse, setislighthouse] = useState(false);
   const [isipfsready, setisipfsready] = useState(false);
   const [currectplatform, setcurrectplatform] = useState([]);
   const [folders, setfolders] = useState([{ folderName: "" }]);
@@ -54,6 +56,11 @@ function Charts() {
       loadFolders(res[1]);
       setcurrectplatform(res);
       setwebstorageready(true);
+    } else if (active == "lighthouse") {
+      var res = JSON.parse(localStorage.getItem(active));
+      loadFolders(res[1]);
+      setcurrectplatform(res);
+      setislighthouse(true);
     }
     loadPlatforms();
   }, [signer, isplatformready]);
@@ -68,6 +75,11 @@ function Charts() {
     var res = platforms?.filter((data) => data.platformName === "IPFS");
     return res;
   };
+
+  const getLighthousestorage = () => {
+    var res = platforms?.filter((data) => data.platformName === "Lighthouse");
+    return res;
+  }
 
   const onCreatePlatform = async () => {
     // console.log(token);
@@ -108,12 +120,25 @@ function Charts() {
       var res = JSON.parse(localStorage.getItem(type));
       loadFolders(res[1]);
       setcurrectplatform(res);
-    } else {
+    } else if (type === "webStorage") {
       setwebstorageready(true);
       setisipfsready(false);
       let arr = getWeb3storage();
       localStorage.setItem(
         `webStorage`,
+        JSON.stringify([arr[0]?.platformName, arr[0].platform_id.toString()])
+      );
+      localStorage.setItem("isActive", type);
+      var res = JSON.parse(localStorage.getItem(type));
+      loadFolders(res[1]);
+      setcurrectplatform(res);
+    } else if (type === "lighthouse") {
+      setwebstorageready(false);
+      setisipfsready(false);
+      setislighthouse(true);
+      let arr = getLighthousestorage();
+      localStorage.setItem(
+        `lighthouse`,
         JSON.stringify([arr[0]?.platformName, arr[0].platform_id.toString()])
       );
       localStorage.setItem("isActive", type);
@@ -296,6 +321,49 @@ function Charts() {
                 </>
               )}
             </article>
+            <article
+              onClick={() => {
+                setPlatformActive("lighthouse");
+              }}
+              class={`${
+                islighthouse
+                  ? "p-6 cursor-pointer bg-white dark:bg-gray-800 border-4 border-gray-400 dark:border-gray-500  rounded-lg"
+                  : "p-6 cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500  rounded-lg"
+              } `}
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500 dark:text-gray-300">
+                    Platform
+                  </p>
+
+                  <p class="text-2xl font-medium text-gray-900 dark:text-gray-300">
+                    Lighthouse
+                  </p>
+                </div>
+
+                <img src={LH} className="rounded-full w-10 h-10" />
+              </div>
+
+              {getLighthousestorage()?.length >= 1 ? (
+                <div class="flex mt-1 text-green-600 dark:text-green-400 gap-1 cursor-pointer">
+                  Platform added already
+                </div>
+              ) : (
+                <>
+                  <p className="text-red-500">NB: Credentials are Immutable</p>
+                  <div
+                    onClick={() => {
+                      setplatformName("Lighthouse");
+                      setModal(true);
+                    }}
+                    class="flex mt-1 text-green-600 dark:text-green-400 gap-1 cursor-pointer"
+                  >
+                    Add Credential <PlusIcon className="h-6" />
+                  </div>
+                </>
+              )}
+            </article>
           </div>
         </ChartCard>
       </div>
@@ -308,6 +376,8 @@ function Charts() {
                   ? IPFS
                   : currectplatform[0] === "Web3 Storage"
                   ? WS
+                  : currectplatform[0] === "Lighthouse"
+                  ? LH
                   : ""
               }
               className="w-8 rounded-lg"

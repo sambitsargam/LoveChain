@@ -285,7 +285,6 @@ const AuthProvider = ({ children }) => {
         await web3Provider.send("wallet_addEthereumChain", [customChainConfig]);
         window.location.reload();
         alert('Added to Avalanche testnet... Please  Reconnect');
-
         
   }
 }
@@ -317,6 +316,11 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     alert('something');
   };
+  
+  const letgo = () => {
+    alert("lets check function is working or not")
+  }
+
 
   useEffect(() => {
     loadContracts();
