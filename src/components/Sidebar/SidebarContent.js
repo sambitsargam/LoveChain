@@ -76,38 +76,6 @@ function SidebarContent() {
       </div>
 
       <hr />
-
-      <div className="space-y-6 ml-6  mt-3">
-        <div className="flex flex-row items-center space-x-2">
-          <img src={SP} className="w-10 rounded-lg" />
-          <p className="">Spruce Id</p>
-        </div>
-        <div className="flex flex-row mb-4 items-center space-x-2">
-          <img src={ens} className="w-8" />
-          <p>ENS Domain</p>
-        </div>
-
-        <div className="flex flex-row items-center space-x-2">
-          <img src={union} className="w-8 rounded-lg" />
-          <p className="">Union Fianace</p>
-        </div>
-        <div className="flex flex-row items-center space-x-2">
-          <img src={ava} className="w-8 rounded-lg" />
-          <p className="">Avalanche</p>
-        </div>
-        <div className="flex flex-row items-center space-x-2">
-          <img src={arb} className="w-8 rounded-lg" />
-          <p className="">Arbitrum</p>
-        </div>
-        <div className="flex flex-row items-center space-x-2">
-          <img src={WS} className="w-8 rounded-lg" />
-          <p className="">web3 storage</p>
-        </div>
-        <div className="flex flex-row items-center space-x-2">
-          <img src={xmtp} className="w-8 rounded-lg" />
-          <p className="">XMTP Protocol</p>
-        </div>
-      </div>
     </div>
   );
 }
