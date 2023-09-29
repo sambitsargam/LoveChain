@@ -1,2 +1,2 @@
-export const AvaAddress = "0xAC99583EE8ae7BfCda7D43657F6a4c0c0Da7E0B8";
-export const ArbAddress = "0xAC99583EE8ae7BfCda7D43657F6a4c0c0Da7E0B8";
+export const AvaAddress = "0x1BB1A63BB27cA963089e5E3C23E4ad6972E1a39B";
+export const ArbAddress = "0x1BB1A63BB27cA963089e5E3C23E4ad6972E1a39B";
