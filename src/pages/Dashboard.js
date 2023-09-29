@@ -109,6 +109,7 @@ function Buttons() {
   async function allUsers() {
     const data = await signer?.fetchAllUsers();
     setusers(data);
+    console.log(data);
     // setuserstatus(data);
   }
   useEffect(() => {
@@ -128,8 +129,8 @@ function Buttons() {
 
   const onAddProfile = async () => {
     let transaction = await signer.createProfile(
-      imageurl,
       name,
+      imageurl,
       profile,
       gender,
       year,
