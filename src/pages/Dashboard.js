@@ -14,6 +14,8 @@ import {
   Loading,
   Textarea,
 } from "@nextui-org/react";
+import { Web3Storage } from "web3.storage";
+
 
 import { AuthContext } from "../utils/AuthProvider";
 import PageTitle from "../components/Typography/PageTitle";
@@ -37,6 +39,11 @@ function Buttons() {
   const [amount, setamount] = useState("");
   const [users, setusers] = useState([]);
   const [userid, setuserid] = useState("");
+  const [contentList, setContentList] = useState([]);
+  const [key, setKey] = useState('');
+  const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const handler = () => setVisible(true);
   const closeHandler = () => {
     setVisible(false);
@@ -67,6 +74,36 @@ function Buttons() {
   async function isUserRegistered() {
     const data = await signer?.isRegistered();
     setuserstatus(data);
+  }
+
+  function getAccessToken() {
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGIyMDE1N0IyODJiMkQ5ZThFMzY5MjBGMDhiY0EyZkVhMzRmRTBmYjQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzYyMjU5MjQ3MTEsIm5hbWUiOiJtZW50bGUifQ.wjCD8ygNde_wiV95BPDJFe7KvKcysTTwvz4RcDMwJEw";
+  }
+
+  function makeStorageClient() {
+    return new Web3Storage({ token: getAccessToken() });
+  }
+
+  async function onChangeCoverImage(e) {
+    setisloading(true);
+    const files = e.target.files[0];
+    const client = makeStorageClient();
+    const cid = await client.put([files]);
+    console.log("stored files with cid:", cid);
+
+    const res = await client.get(cid);
+    console.log(`Got a response! [${res.status}] ${res.statusText}`);
+    if (!res.ok) {
+      throw new Error(
+        `failed to get ${cid} - [${res.status}] ${res.statusText}`
+      );
+    }
+    const filess = await res.files();
+    setFile(`https://${cid}.ipfs.dweb.link/${files.name}`);
+    // console.log(file);
+    console.log(files);
+
+    return cid;
   }
 
   async function allUsers() {
