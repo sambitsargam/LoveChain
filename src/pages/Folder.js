@@ -125,7 +125,15 @@ function Dashboard() {
       setprojectsecrete(filterr[0]?.platformsecret);
       console.log(filterr[0]?.platformid);
       console.log(filterr[0]?.platformsecret);
-    } else {
+    } else if (active == "lighthouse") {
+      const data = await signer?.getPlatforms();
+      const filterr = data.filter(
+        (items) => items.platformName == "LightHouse"
+      );
+      settoken(filterr[0]?.token);
+      console.log(filterr[0]?.token);
+    }
+    else {
       const data = await signer?.getPlatforms();
       const filterr = data.filter(
         (items) => items.platformName == "Web3 Storage"
