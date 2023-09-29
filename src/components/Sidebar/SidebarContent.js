@@ -7,14 +7,8 @@ import { NavLink, Route, Link } from "react-router-dom";
 import * as Icons from "../../icons";
 import SidebarSubmenu from "./SidebarSubmenu";
 import { Button } from "@windmill/react-ui";
-import ens from "../../assets/ens.svg"
 import WS from "../../assets/img/ws.png";
-import union from "../../assets/union.svg"
 import Logo from "../../assets/logo.png";
-import SP from "../../assets/spp.png";
-import ava from "../../assets/ava.svg";
-import arb from "../../assets/arb.png"; 
-import xmtp from "../../assets/xmtp.png";
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon];
   return <Icon {...props} />;
