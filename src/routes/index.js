@@ -12,6 +12,8 @@ const Page404 = lazy(() => import("../pages/404"));
 const Blank = lazy(() => import("../pages/Blank"));
 const Store = lazy(() => import("../pages/Dashboards"));
 const Storage = lazy(() => import("../pages/Storage"));
+const Folder = lazy(() => import("../pages/Folder"));
+
 
 /**
  * ⚠ These are internal routes!
@@ -39,6 +41,10 @@ const routes = [
   {
     path: "/store",
     component: Store,
+  },
+  {
+    path: "/folder/:foldername/:id",
+    component: Folder,
   },
   {
     path: "/setting",
