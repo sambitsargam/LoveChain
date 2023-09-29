@@ -75,7 +75,8 @@ contract LoveChain  is ERC721URIStorage {
 
     struct User {	
         uint256 id;	
-        address payable _address;	
+        address payable _address;
+        string name;	
         string image;	
         string profile;	
         string gender;	
@@ -99,7 +100,8 @@ contract LoveChain  is ERC721URIStorage {
   	
     event UserCreated(	
         uint256 id,	
-        address payable _address,	
+        address payable _address,
+        string name,	
         string image,	
         string profile,	
         string gender,	
@@ -148,7 +150,7 @@ contract LoveChain  is ERC721URIStorage {
         platform[msg.sender][platformCount[msg.sender]] = _platform;
     }
 
-function createProfile(string memory _image, string memory _profile, string memory _gender, string memory _year, string memory _country)
+function createProfile(string memory _name,string memory _image, string memory _profile, string memory _gender, string memory _year, string memory _country)
         public
     {
         if (registeredUsers[msg.sender] == false) {
@@ -158,6 +160,7 @@ function createProfile(string memory _image, string memory _profile, string memo
 
            _users.id = userCount;	
             _users._address = payable(address(msg.sender));	
+            _users.name = _name;
             _users.image = _image;	
             _users.profile = _profile;	
             _users.gender = _gender;	
@@ -168,8 +171,12 @@ function createProfile(string memory _image, string memory _profile, string memo
 
             //userProfile
             _userprofile.id = userCount;
+            _userprofile.name = _name;
             _userprofile.image = _image;
             _userprofile.profile = _profile;
+            _userprofile.gender = _gender;
+            _userprofile.year = _year;
+            _userprofile.country = _country;
             _userprofile._address = payable(address(msg.sender));
 
             userProfile[msg.sender] = _userprofile;
@@ -178,6 +185,7 @@ function createProfile(string memory _image, string memory _profile, string memo
             emit UserCreated(
                 _users.id,
                 payable(address(msg.sender)),
+                _name,
                 _image,
                 _profile,
                  _gender,	
@@ -230,12 +238,6 @@ function createProfile(string memory _image, string memory _profile, string memo
         fileCount[msg.sender][_folderId] = fileCount[msg.sender][_folderId] + 1;
 
         File storage _file = file[_folderId][fileCount[msg.sender][_folderId]];
-        // require(
-        //     _file.folderId == _folderId &&
-        //         keccak256(abi.encodePacked(_file.fileName)) ==
-        //         keccak256(abi.encodePacked(_fileName)),
-        //     "Folder name already exisits"
-        // );
         _file.fileId = fileCount[msg.sender][_folderId];
         _file.fileCount = fileCount[msg.sender][_folderId];
         _file.fileHash = _fileHash;
